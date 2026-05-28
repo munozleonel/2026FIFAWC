@@ -2,12 +2,44 @@
   "groups": [
     {
       "group": "A",
-      "teams": ["Mexico", "South Africa", "South Korea", "Czech Republic"]
+      "table": [
+        {"team": "Mexico", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "South Africa", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Korea Republic", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Czechia", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0}
+      ]
     },
     {
       "group": "B",
-      "teams": ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"]
-    }
-    // Add the remaining 10 groups here...
-  ]
-}
+      "table": [
+        {"team": "Canada", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Bosnia and Herzegovina", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Qatar", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Switzerland", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0}
+      ]
+    },
+    {
+      "group": "C",
+      "table": [
+        {"team": "Brazil", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Morocco", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Haiti", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Scotland", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0}
+      ]
+    },
+    {
+      "group": "D",
+      "table": [
+        {"team": "United States", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Paraguay", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Australia", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Türkiye", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0}
+      ]
+    },
+    {
+      "group": "E",
+      "table": [
+        {"team": "Germany", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Côte d'Ivoire", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Ecuador", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0, "gd": 0, "points": 0},
+        {"team": "Curaçao", "played": 0, "won": 0, "drawn": 0, "lost": 0, "gf": 0, "ga": 0,
