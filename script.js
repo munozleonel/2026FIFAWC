@@ -1,69 +1,66 @@
-// script.js
-async function loadWorldCupData() {
+// Load Groups
+async function loadGroups() {
     try {
-        const response = await fetch('data/worldcup.json?' + Date.now()); // Prevent caching
-        if (!response.ok) throw new Error('Failed to load JSON');
-
-        const data = await response.json();
-        
-        console.log("✅ Data loaded successfully! Total matches:", data.matches?.length || 0);
-        
-        displayFixtures(data);
-
-    } catch (error) {
-        console.error("❌ Error loading data:", error);
-        document.getElementById('fixtures-container').innerHTML = `
-            <p style="color:red; text-align:center;">
-                Unable to load match data.<br>
-                <small>Please refresh the page.</small>
-            </p>`;
-    }
+        const res = await fetch('data/groups.json?' + Date.now());
+        const data = await res.json();
+        displayGroups(data.groups);
+    } catch(e) { console.error("Groups load failed", e); }
 }
 
-function displayFixtures(data) {
-    const container = document.getElementById('fixtures-container');
-    if (!container) return;
-
-    const matches = data.matches || [];
+function displayGroups(groups) {
+    const container = document.getElementById('groups-container');
+    let html = "<h2>Groups</h2>";
     
-    if (matches.length === 0) {
-        container.innerHTML = "<p>No matches found in the data yet.</p>";
-        return;
-    }
-
-    const grouped = {};
-    matches.forEach(match => {
-        const round = match.round || "Other";
-        if (!grouped[round]) grouped[round] = [];
-        grouped[round].push(match);
-    });
-
-    let html = `<h2>${data.name || "2026 FIFA World Cup"}</h2>`;
-
-    Object.keys(grouped).sort().forEach(round => {
-        html += `<h3>${round}</h3><div class="matches">`;
-        
-        grouped[round].forEach(match => {
-            html += `
-                <div class="match">
-                    <div class="match-info">
-                        ${match.date} • ${match.time || ''} | ${match.ground || ''}
-                    </div>
-                    <div class="teams">
-                        <div class="team">${match.team1}</div>
-                        <div class="vs">VS</div>
-                        <div class="team">${match.team2}</div>
-                    </div>
-                    ${match.group ? `<small>Group ${match.group}</small>` : ''}
-                </div>
-            `;
+    groups.forEach(g => {
+        html += `<h3>Group ${g.group}</h3><ul>`;
+        g.teams.forEach(team => {
+            html += `<li>${team}</li>`;
         });
-        
-        html += `</div>`;
+        html += `</ul>`;
     });
-
+    
     container.innerHTML = html;
 }
 
-// Load the data
-document.addEventListener('DOMContentLoaded', loadWorldCupData);
+// Load Standings
+async function loadStandings() {
+    try {
+        const res = await fetch('data/standings.json?' + Date.now());
+        const data = await res.json();
+        displayStandings(data.standings);
+    } catch(e) { console.error("Standings load failed", e); }
+}
+
+function displayStandings(standings) {
+    const container = document.getElementById('standings-container');
+    let html = "<h2>Current Standings</h2>";
+    
+    standings.forEach(group => {
+        html += `<h3>Group ${group.group}</h3>`;
+        html += `<table class="group-table"><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>`;
+        
+        group.table.forEach(team => {
+            html += `<tr>
+                <td>${team.team}</td>
+                <td>${team.played}</td>
+                <td>${team.won}</td>
+                <td>${team.drawn}</td>
+                <td>${team.lost}</td>
+                <td>${team.gf}</td>
+                <td>${team.ga}</td>
+                <td>${team.gd}</td>
+                <td><strong>${team.points}</strong></td>
+            </tr>`;
+        });
+        html += `</table>`;
+    });
+    
+    container.innerHTML = html;
+}
+
+// Call all loaders
+document.addEventListener('DOMContentLoaded', () => {
+    loadWorldCupData();
+    loadGroups();
+    loadStandings();
+});
