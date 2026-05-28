@@ -2,42 +2,44 @@
 async function loadWorldCupData() {
     try {
         const response = await fetch('data/worldcup.json');
-        if (!response.ok) throw new Error('Failed to load data');
+        if (!response.ok) throw new Error('Failed to load JSON');
 
         const data = await response.json();
         
-        console.log("✅ Data loaded successfully:", data.name);
+        console.log("✅ Data loaded! Matches:", data.matches?.length || 0);
         
-        displayFixtures(data.matches || []);
+        displayFixtures(data);
 
     } catch (error) {
-        console.error("❌ Error loading data:", error);
+        console.error("❌ Error:", error);
         document.getElementById('fixtures-container').innerHTML = `
             <p style="color:red; text-align:center;">
-                Unable to load match data.<br>
-                Please wait a few minutes and refresh.
+                Error loading data.<br>
+                <small>Check browser console (F12) for details.</small>
             </p>`;
     }
 }
 
-function displayFixtures(matches) {
+function displayFixtures(data) {
     const container = document.getElementById('fixtures-container');
     if (!container) return;
 
-    if (!matches || matches.length === 0) {
-        container.innerHTML = "<p>No matches found yet.</p>";
+    const matches = data.matches || [];
+    
+    if (matches.length === 0) {
+        container.innerHTML = "<p>No matches available yet.</p>";
         return;
     }
 
     // Group matches by round
     const grouped = {};
     matches.forEach(match => {
-        const round = match.round || "Other";
+        const round = match.round || "Other Matches";
         if (!grouped[round]) grouped[round] = [];
         grouped[round].push(match);
     });
 
-    let html = `<h2>${data ? data.name : "FIFA World Cup 2026"}</h2>`;
+    let html = `<h2>${data.name || "2026 FIFA World Cup"}</h2>`;
 
     Object.keys(grouped).sort().forEach(round => {
         html += `<h3>${round}</h3><div class="matches">`;
@@ -53,7 +55,6 @@ function displayFixtures(matches) {
                         <div class="vs">VS</div>
                         <div class="team">${match.team2}</div>
                     </div>
-                    ${match.score ? `<div class="score">${match.score}</div>` : ''}
                     ${match.group ? `<small>Group ${match.group}</small>` : ''}
                 </div>
             `;
@@ -65,5 +66,5 @@ function displayFixtures(matches) {
     container.innerHTML = html;
 }
 
-// Auto load when page opens
+// Load data when page is ready
 document.addEventListener('DOMContentLoaded', loadWorldCupData);
