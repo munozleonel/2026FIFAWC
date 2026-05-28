@@ -5,22 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 FIFA World Cup</title>
     <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
         .match { 
-            border: 1px solid #ddd; 
-            margin: 10px 0; 
+            border: 1px solid #ccc; 
+            margin: 12px 0; 
             padding: 15px; 
             border-radius: 8px;
+            background: #f9f9f9;
         }
-        .teams { display: flex; align-items: center; justify-content: center; }
-        .vs { font-weight: bold; margin: 0 15px; }
+        .teams { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.1em;
+        }
+        .vs { font-weight: bold; margin: 0 20px; color: #555; }
+        .match-info { color: #666; margin-bottom: 8px; font-size: 0.95em; }
     </style>
 </head>
 <body>
     <h1>2026 FIFA World Cup</h1>
     
     <div id="fixtures-container">
-        <!-- Fixtures will be loaded here by JavaScript -->
-        <p>Loading matches...</p>
+        <p>Loading matches... Please wait.</p>
     </div>
 
     <script src="script.js"></script>
