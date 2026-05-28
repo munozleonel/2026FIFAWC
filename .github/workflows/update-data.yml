@@ -2,8 +2,11 @@ name: Update World Cup Data
 
 on:
   schedule:
-    - cron: '0 */3 * * *'     # Every 3 hours
-  workflow_dispatch:          # Allows manual trigger
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update-data:
@@ -22,10 +25,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
           git add data/worldcup.json
+          
           if git diff --staged --quiet; then
-            echo "No changes to data"
+            echo "No changes to World Cup data"
           else
-            git commit -m "Update World Cup data - $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "Update World Cup data - $(date +'%Y-%m-%d %H:%M UTC') [skip ci]"
             git push
           fi
