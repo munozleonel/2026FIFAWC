@@ -485,20 +485,78 @@ const RANKINGS = {
   "Iraq":45,"Jordan":46,"Haiti":47,"Uzbekistan":48,"DR Congo":49,"Cabo Verde":50,"Curaçao":51,
 };
 
-const GROUPS_DATA = {
-  "A":[["Mexico",2,1,0,0,"active"],["South Africa",0,0,0,0,"active"],["South Korea",0,0,0,0,"active"],["Czechia",0,0,0,0,"active"]],
-  "B":[["Canada",0,0,0,0,"active"],["Bosnia & Herz.",0,0,0,0,"active"],["Qatar",0,0,0,0,"active"],["Switzerland",0,0,0,0,"active"]],
-  "C":[["Brazil",0,0,0,0,"active"],["Morocco",0,0,0,0,"active"],["Scotland",0,0,0,0,"active"],["Haiti",0,0,0,0,"active"]],
-  "D":[["USA",0,0,0,0,"active"],["Paraguay",0,0,0,0,"active"],["Australia",0,0,0,0,"active"],["Türkiye",0,0,0,0,"active"]],
-  "E":[["Germany",0,0,0,0,"active"],["Ivory Coast",0,0,0,0,"active"],["Ecuador",0,0,0,0,"active"],["Curaçao",0,0,0,0,"active"]],
-  "F":[["Netherlands",0,0,0,0,"active"],["Japan",0,0,0,0,"active"],["Sweden",0,0,0,0,"active"],["Tunisia",0,0,0,0,"active"]],
-  "G":[["Belgium",0,0,0,0,"active"],["Egypt",0,0,0,0,"active"],["Iran",0,0,0,0,"active"],["New Zealand",0,0,0,0,"active"]],
-  "H":[["Spain",0,0,0,0,"active"],["Saudi Arabia",0,0,0,0,"active"],["Uruguay",0,0,0,0,"active"],["Cabo Verde",0,0,0,0,"active"]],
-  "I":[["France",0,0,0,0,"active"],["Senegal",0,0,0,0,"active"],["Norway",0,0,0,0,"active"],["Iraq",0,0,0,0,"active"]],
-  "J":[["Argentina",0,0,0,0,"active"],["Algeria",0,0,0,0,"active"],["Austria",0,0,0,0,"active"],["Jordan",0,0,0,0,"active"]],
-  "K":[["Portugal",0,0,0,0,"active"],["Colombia",0,0,0,0,"active"],["Uzbekistan",0,0,0,0,"active"],["DR Congo",0,0,0,0,"active"]],
-  "L":[["England",0,0,0,0,"active"],["Croatia",0,0,0,0,"active"],["Ghana",0,0,0,0,"active"],["Panama",0,0,0,0,"active"]],
-};
+// ===============================================
+// LOAD GROUP STANDINGS FROM JSON
+// ===============================================
+
+let GROUPS_DATA = {};
+
+// Load groups.json
+async function loadGroupsData() {
+    try {
+        const res = await fetch('data/groups.json?' + Date.now());
+        if (!res.ok) throw new Error("groups.json not found");
+        
+        const json = await res.json();
+        GROUPS_DATA = {};
+        
+        json.groups.forEach(group => {
+            GROUPS_DATA[group.group] = group.table.map(team => [
+                team.team,
+                team.played || 0,
+                team.gf || 0,
+                team.ga || 0,
+                team.points || 0,
+                "active"
+            ]);
+        });
+        console.log("✅ Group standings loaded from JSON");
+    } catch (e) {
+        console.error("❌ Could not load groups.json:", e);
+    }
+}
+
+// Updated buildGroupTables using loaded data
+function buildGroupTables(){
+    const grid=document.getElementById('groups-grid');
+    grid.innerHTML='';
+    
+    Object.keys(GROUPS_DATA).sort().forEach(grp=>{
+        const sorted=[...GROUPS_DATA[grp]].sort((a,b)=>b[4]-a[4]||(b[2]-b[3])-(a[2]-a[3])||b[2]-a[2]);
+        const card=document.createElement('div');
+        card.className='group-card';
+        let rows='';
+        
+        sorted.forEach(([team,gp,gf,ga,pts,status],i)=>{
+            const gd=gf-ga;
+            const isF=followedTeams.has(team);
+            let nc='gt-name';
+            if(isF) nc+=' followed-name';
+            
+            const w = Math.floor(pts/3);
+            const d = pts - w*3;
+            const l = gp - w - d;
+            
+            rows+=`<tr${i===1?' class="advance-line"':''}>
+                <td><div class="gt-team-cell">
+                    <span class="gt-pos">${i+1}</span>
+                    ${renderFlag(team,'sm')}
+                    <span class="${nc}">${team}</span>
+                    <span class="gt-ranking">#${RANKINGS[team]||'—'}</span>
+                </div></td>
+                <td>${gp}</td>
+                <td class="gt-w">${w}</td>
+                <td class="gt-d">${d}</td>
+                <td class="gt-l">${l}</td>
+                <td>${gf}</td><td>${ga}</td>
+                <td>${gd>0?'+'+gd:gd}</td><td class="gt-pts">${pts}</td></tr>`;
+        });
+        
+        card.innerHTML=`<div class="group-card-header"><span class="group-label">GROUP ${grp}</span><span class="group-venue-hint">Group Stage</span></div>
+            <table class="group-table"><thead><tr><th>Team</th><th title="Games Played">GP</th><th title="Wins" style="color:#66BB6A">W</th><th title="Draws">D</th><th title="Losses" style="color:#FF6644">L</th><th title="Goals For">GF</th><th title="Goals Against">GA</th><th title="Goal Difference">GD</th><th title="Points">PTS</th></tr></thead><tbody>${rows}</tbody></table>`;
+        grid.appendChild(card);
+    });
+}
 
 // Tournament stats – pre-tournament projected / placeholder data
 // [name, team, position, gp, goals, assists, yellow, red, mins]
@@ -1126,16 +1184,22 @@ function updateClock(){
   }catch(e){document.getElementById('live-clock').textContent=new Date().toLocaleTimeString();}
 }
 
-buildTZSelector();
-buildTeamList();
-buildGroupTables();
-buildFixtures();
-buildTopPerformers();
-buildFanTeamPlayers();
-initSubsecHeights();
-updateClock();
-updateCountdown();
-updateFixFilterCount();
+// Load data first, then build UI
+    async function initApp() {
+    await loadGroupsData();
+    buildTZSelector();
+    buildTeamList();
+    buildGroupTables();
+    buildFixtures();
+    buildTopPerformers();
+    buildFanTeamPlayers();
+    initSubsecHeights();
+    updateClock();
+    updateCountdown();
+    updateFixFilterCount();
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
 setInterval(updateClock,1000);
 setInterval(updateCountdown,1000);
 </script>
