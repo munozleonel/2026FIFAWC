@@ -1,21 +1,21 @@
 // script.js
 async function loadWorldCupData() {
     try {
-        const response = await fetch('data/worldcup.json');
+        const response = await fetch('data/worldcup.json?' + Date.now()); // Prevent caching
         if (!response.ok) throw new Error('Failed to load JSON');
 
         const data = await response.json();
         
-        console.log("✅ Data loaded! Matches:", data.matches?.length || 0);
+        console.log("✅ Data loaded successfully! Total matches:", data.matches?.length || 0);
         
         displayFixtures(data);
 
     } catch (error) {
-        console.error("❌ Error:", error);
+        console.error("❌ Error loading data:", error);
         document.getElementById('fixtures-container').innerHTML = `
             <p style="color:red; text-align:center;">
-                Error loading data.<br>
-                <small>Check browser console (F12) for details.</small>
+                Unable to load match data.<br>
+                <small>Please refresh the page.</small>
             </p>`;
     }
 }
@@ -27,14 +27,13 @@ function displayFixtures(data) {
     const matches = data.matches || [];
     
     if (matches.length === 0) {
-        container.innerHTML = "<p>No matches available yet.</p>";
+        container.innerHTML = "<p>No matches found in the data yet.</p>";
         return;
     }
 
-    // Group matches by round
     const grouped = {};
     matches.forEach(match => {
-        const round = match.round || "Other Matches";
+        const round = match.round || "Other";
         if (!grouped[round]) grouped[round] = [];
         grouped[round].push(match);
     });
@@ -48,7 +47,7 @@ function displayFixtures(data) {
             html += `
                 <div class="match">
                     <div class="match-info">
-                        ${match.date} • ${match.time} | ${match.ground || ''}
+                        ${match.date} • ${match.time || ''} | ${match.ground || ''}
                     </div>
                     <div class="teams">
                         <div class="team">${match.team1}</div>
@@ -66,5 +65,5 @@ function displayFixtures(data) {
     container.innerHTML = html;
 }
 
-// Load data when page is ready
+// Load the data
 document.addEventListener('DOMContentLoaded', loadWorldCupData);
