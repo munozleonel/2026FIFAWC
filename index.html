@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 FIFA World Cup</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .match { 
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.5; }
+        h1 { text-align: center; color: #1a1a1a; }
+        section { margin-bottom: 40px; }
+        .match, .group-table { 
             border: 1px solid #ccc; 
             margin: 12px 0; 
             padding: 15px; 
@@ -18,17 +20,32 @@
             align-items: center; 
             justify-content: center; 
             font-size: 1.1em;
+            margin: 10px 0;
         }
         .vs { font-weight: bold; margin: 0 20px; color: #555; }
         .match-info { color: #666; margin-bottom: 8px; font-size: 0.95em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #eee; }
     </style>
 </head>
 <body>
     <h1>2026 FIFA World Cup</h1>
-    
-    <div id="fixtures-container">
-        <p>Loading matches... Please wait.</p>
-    </div>
+
+    <section id="groups-section">
+        <h2>Group Tables</h2>
+        <div id="groups-container">Loading groups...</div>
+    </section>
+
+    <section id="results-section">
+        <h2>Results</h2>
+        <div id="results-container">Loading results...</div>
+    </section>
+
+    <section id="fixtures-section">
+        <h2>Upcoming Fixtures</h2>
+        <div id="fixtures-container">Loading fixtures...</div>
+    </section>
 
     <script src="script.js"></script>
 </body>
