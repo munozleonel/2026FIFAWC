@@ -1,119 +1,127 @@
-// script.js
+<script>
+// ===============================================
+// DATA LOADING FROM JSON FILES
+// ===============================================
 
-async function loadAllData() {
-    await loadGroups();
-    await loadResultsAndFixtures();
-}
+let GROUPS_DATA = {};
+let FIXTURES_RAW = [];
 
-// ====================== GROUPS ======================
-async function loadGroups() {
+// Load data from JSON files
+async function loadExternalData() {
     try {
-        const res = await fetch('data/groups.json?' + Date.now());
-        const data = await res.json();
-        displayGroups(data.groups || []);
+        // Load Groups + Standings
+        const groupsRes = await fetch('data/groups.json?' + Date.now());
+        if (groupsRes.ok) {
+            const groupsJson = await groupsRes.json();
+            GROUPS_DATA = {};
+            groupsJson.groups.forEach(group => {
+                GROUPS_DATA[group.group] = group.table.map(team => [
+                    team.team,
+                    team.played,
+                    team.gf,
+                    team.ga,
+                    team.points,
+                    "active"
+                ]);
+            });
+        }
+
+        // Load Fixtures & Results
+        const wcRes = await fetch('data/worldcup.json?' + Date.now());
+        if (wcRes.ok) {
+            const wcData = await wcRes.json();
+            FIXTURES_RAW = (wcData.matches || []).map(match => [
+                match.group || "Other",
+                match.date + "T" + (match.time || "00:00:00") + "Z",  // Approximate time
+                match.team1,
+                match.team2,
+                match.ground || "TBD",
+                match.city || "",
+                "", "", ""  // Odds (can be ignored)
+            ]);
+        }
     } catch (e) {
-        console.error("Groups failed", e);
-        document.getElementById('groups-container').innerHTML = "<p>Groups data not available yet.</p>";
+        console.error("Failed to load JSON data:", e);
     }
 }
 
-function displayGroups(groups) {
-    const container = document.getElementById('groups-container');
-    let html = "";
+// ===============================================
+// REST OF YOUR ORIGINAL CODE (with small updates)
+// ===============================================
 
-    groups.forEach(group => {
-        html += `<h3>Group ${group.group}</h3>`;
-        html += `<table class="group-table">
-            <tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>`;
+// ... [Keep all your existing functions: renderFlag, buildGroupTables, buildFixtures, etc.] ...
 
-        group.table.forEach(team => {
-            html += `<tr>
-                <td><strong>${team.team}</strong></td>
-                <td>${team.played}</td>
-                <td>${team.won}</td>
-                <td>${team.drawn}</td>
-                <td>${team.lost}</td>
-                <td>${team.gf}</td>
-                <td>${team.ga}</td>
-                <td>${team.gd}</td>
-                <td><strong>${team.points}</strong></td>
+// Update buildGroupTables to use loaded data
+function buildGroupTables() {
+    const grid = document.getElementById('groups-grid');
+    grid.innerHTML = '';
+
+    Object.keys(GROUPS_DATA).sort().forEach(grp => {
+        const sorted = [...GROUPS_DATA[grp]].sort((a, b) => b[4] - a[4] || (b[2] - b[3]) - (a[2] - a[3]) || b[2] - a[2]);
+        
+        const card = document.createElement('div');
+        card.className = 'group-card';
+        let rows = '';
+
+        sorted.forEach(([team, gp, gf, ga, pts, status], i) => {
+            const gd = gf - ga;
+            const isF = followedTeams.has(team);
+            let nc = 'gt-name';
+            if (isF) nc += ' followed-name';
+
+            const w = Math.floor(pts / 3);
+            const d = pts - w * 3;
+            const l = gp - w - d;
+
+            rows += `<tr${i === 1 ? ' class="advance-line"' : ''}>
+                <td><div class="gt-team-cell">
+                    <span class="gt-pos">${i+1}</span>
+                    ${renderFlag(team,'sm')}
+                    <span class="${nc}">${team}</span>
+                </div></td>
+                <td>${gp}</td>
+                <td class="gt-w">${w}</td>
+                <td class="gt-d">${d}</td>
+                <td class="gt-l">${l}</td>
+                <td>${gf}</td><td>${ga}</td>
+                <td>${gd > 0 ? '+' + gd : gd}</td>
+                <td class="gt-pts">${pts}</td>
             </tr>`;
         });
-        html += `</table>`;
+
+        card.innerHTML = `
+            <div class="group-card-header">
+                <span class="group-label">GROUP ${grp}</span>
+            </div>
+            <table class="group-table">
+                <thead><tr><th>Team</th><th>GP</th><th class="gt-w">W</th><th>D</th><th class="gt-l">L</th><th>GF</th><th>GA</th><th>GD</th><th>PTS</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+        grid.appendChild(card);
     });
-
-    container.innerHTML = html;
 }
 
-// ====================== FIXTURES & RESULTS ======================
-async function loadResultsAndFixtures() {
-    try {
-        const res = await fetch('data/worldcup.json?' + Date.now());
-        const data = await res.json();
-        
-        const matches = data.matches || [];
-        const today = new Date().toISOString().split('T')[0];
+// Call this instead of using hardcoded FIXTURES_RAW in buildFixtures
+// (Your existing buildFixtures() function can stay mostly the same)
 
-        const results = matches.filter(m => m.score);           // Has score = completed
-        const fixtures = matches.filter(m => !m.score);         // No score = upcoming
+// Initialize everything
+async function init() {
+    await loadExternalData();        // ← Important: Load JSON first
+    buildTZSelector();
+    buildTeamList();
+    buildGroupTables();
+    buildFixtures();
+    buildTopPerformers();
+    buildFanTeamPlayers();
+    initSubsecHeights();
+    updateClock();
+    updateCountdown();
+    updateFixFilterCount();
 
-        displayResults(results);
-        displayFixtures(fixtures);
-
-    } catch (e) {
-        console.error("Matches failed", e);
-    }
+    setInterval(updateClock, 1000);
+    setInterval(updateCountdown, 1000);
 }
 
-function displayResults(matches) {
-    const container = document.getElementById('results-container');
-    if (matches.length === 0) {
-        container.innerHTML = "<p>No results yet.</p>";
-        return;
-    }
-    displayMatches(matches, container, "Results");
-}
-
-function displayFixtures(matches) {
-    const container = document.getElementById('fixtures-container');
-    if (matches.length === 0) {
-        container.innerHTML = "<p>No upcoming fixtures at the moment.</p>";
-        return;
-    }
-    displayMatches(matches, container, "Fixtures");
-}
-
-function displayMatches(matches, container, title) {
-    const grouped = {};
-    matches.forEach(match => {
-        const round = match.round || "Other";
-        if (!grouped[round]) grouped[round] = [];
-        grouped[round].push(match);
-    });
-
-    let html = "";
-    Object.keys(grouped).sort().forEach(round => {
-        html += `<h3>${round}</h3><div class="matches">`;
-        
-        grouped[round].forEach(match => {
-            html += `
-                <div class="match">
-                    <div class="match-info">
-                        ${match.date} • ${match.time || ''} | ${match.ground || ''}
-                    </div>
-                    <div class="teams">
-                        <div class="team">${match.team1}</div>
-                        <div class="vs">${match.score ? match.score : 'VS'}</div>
-                        <div class="team">${match.team2}</div>
-                    </div>
-                    ${match.group ? `<small>Group ${match.group}</small>` : ''}
-                </div>`;
-        });
-        html += `</div>`;
-    });
-
-    container.innerHTML = html;
-}
-
-// Load everything
-document.addEventListener('DOMContentLoaded', loadAllData);
+// Start the app
+document.addEventListener('DOMContentLoaded', init);
+</script>
