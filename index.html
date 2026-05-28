@@ -71,6 +71,42 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
 /* ─── MAIN LAYOUT ─────────────────────────────────────────── */
 #main-layout{display:flex;height:calc(100vh - 64px);overflow:hidden}
 
+/* Mobile view switcher (hidden on desktop) */
+#mobile-view-switcher{display:none;flex-shrink:0;background:rgba(0,20,60,0.95);border-bottom:1px solid var(--border);padding:6px 12px;gap:6px;align-items:center}
+.mv-btn{flex:1;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:7px 6px;border-radius:5px;border:1px solid var(--border);background:none;color:var(--fg-muted);cursor:pointer;transition:all 0.2s;text-align:center}
+.mv-btn.active{background:rgba(0,168,224,0.15);border-color:var(--fifa-sky);color:var(--fifa-sky)}
+
+/* ── Desktop: 3-column group grid ── */
+.groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+/* ── Responsive breakpoints ── */
+@media(max-width:900px){
+  html,body{overflow:auto}
+  #app-header{height:auto;flex-wrap:wrap;padding:8px 12px;gap:6px}
+  #countdown-wrap{order:3;width:100%;border:none;border-top:1px solid rgba(255,255,255,0.06);padding:6px 0 2px}
+  .header-logo{flex:1}
+  .header-right{flex-shrink:0}
+  #main-layout{flex-direction:column;height:auto;overflow:visible}
+  #mobile-view-switcher{display:flex}
+  #section1,#section2,#section3{width:100%!important;max-width:100%!important;min-width:0!important;border:none!important;height:auto;overflow:visible;flex-shrink:0}
+  #section1,#section2,#section3{display:none}
+  #section1.mob-active,#section2.mob-active,#section3.mob-active{display:flex}
+  #section2{border-top:1px solid var(--border)!important}
+  #section3{border-top:1px solid var(--border)!important}
+  #team-list-scroll{max-height:60vh;overflow-y:auto}
+  #s2-scroll{max-height:none;overflow-y:visible}
+  #s3-scroll{max-height:none;overflow-y:visible}
+  .groups-grid{grid-template-columns:1fr}
+  /* Mobile: show emoji flags in group tables */
+  .gt-code{display:none!important}
+  .gt-flag-mob{display:inline!important}
+}
+@media(min-width:901px){
+  /* Desktop: show letter codes, hide emoji flags in group tables */
+  .gt-code{display:inline-block}
+  .gt-flag-mob{display:none!important}
+}
+
 /* ─── SECTION 1 ──────────────────────────────────────────── */
 #section1{width:20%;min-width:240px;max-width:310px;background:linear-gradient(180deg,#0A0E1A 0%,#0D1321 100%);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
 #tz-panel{padding:12px 14px 10px;background:rgba(0,61,165,0.12);border-bottom:1px solid var(--border);flex-shrink:0}
@@ -90,6 +126,7 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
 #team-search:focus{border-color:var(--fifa-sky)}
 #team-search::placeholder{color:var(--fg-muted)}
 #team-list-scroll{overflow-y:auto;flex:1;padding:4px 0 20px}
+#team-list-collapsible{display:flex;flex-direction:column;flex:1;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.3s}
 .conf-group{margin-bottom:2px}
 .conf-header{position:sticky;top:0;padding:7px 14px 5px;font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;z-index:10;display:flex;align-items:center;gap:8px;backdrop-filter:blur(10px);border-bottom:1px solid;background:var(--fifa-dark)}
 .conf-header[data-conf="AFC"]{color:var(--afc-color);border-color:rgba(0,168,224,0.2);background:rgba(10,14,26,0.97)}
@@ -136,7 +173,6 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
 .subsec-body{overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.3s}
 .subsec-body.collapsed{max-height:0!important;opacity:0}
 #group-tables-body{padding:14px 16px 8px}
-.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .group-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;overflow:hidden}
 .group-card-header{padding:7px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--card-border)}
 .group-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--fg)}
@@ -198,32 +234,27 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
 .odds-pct-away{color:#FF6644}
 .odds-source{font-size:8.5px;color:var(--fg-muted);opacity:0.5;text-align:center;margin-top:1px}
 
-/* ── Fixture filter toggle ──────────────────────────────── */
+/* ── Fixture & Group Table filter toggles ──────────────────── */
 #fix-filter-wrap{display:flex;align-items:center;gap:8px}
-#fix-filter-btn{
+#fix-filter-btn, #gt-filter-btn{
   display:inline-flex;align-items:center;gap:6px;
   background:none;border:1px solid var(--border);color:var(--fg-muted);
   font-size:10px;padding:3px 10px;border-radius:4px;cursor:pointer;
   font-family:'Oswald',sans-serif;letter-spacing:1px;
   transition:all 0.2s;white-space:nowrap;
 }
-#fix-filter-btn:hover{border-color:var(--fifa-gold);color:var(--fifa-gold)}
-#fix-filter-btn.active{
-  background:rgba(201,168,76,0.15);border-color:var(--fifa-gold);
-  color:var(--fifa-gold);
+#fix-filter-btn:hover, #gt-filter-btn:hover{border-color:var(--fifa-gold);color:var(--fifa-gold)}
+#fix-filter-btn.active, #gt-filter-btn.active{
+  background:rgba(201,168,76,0.15);border-color:var(--fifa-gold);color:var(--fifa-gold);
 }
-#fix-filter-btn .filter-star{font-size:11px;transition:transform 0.2s}
-#fix-filter-btn.active .filter-star{transform:scale(1.2)}
-#fix-filter-count{
+#fix-filter-btn .filter-star, #gt-filter-btn .filter-star{font-size:11px;transition:transform 0.2s}
+#fix-filter-btn.active .filter-star, #gt-filter-btn.active .filter-star{transform:scale(1.2)}
+#fix-filter-count, #gt-filter-count{
   font-size:9px;background:var(--fifa-gold);color:var(--fifa-dark);
-  border-radius:10px;padding:1px 5px;font-weight:700;letter-spacing:0.5px;
-  display:none;
+  border-radius:10px;padding:1px 5px;font-weight:700;letter-spacing:0.5px;display:none;
 }
-#fix-filter-btn.active #fix-filter-count{display:inline}
-.fix-no-followed{
-  text-align:center;padding:32px 16px;color:var(--fg-muted);
-  font-size:12px;line-height:1.8;
-}
+#fix-filter-btn.active #fix-filter-count, #gt-filter-btn.active #gt-filter-count{display:inline}
+.fix-no-followed{text-align:center;padding:32px 16px;color:var(--fg-muted);font-size:12px;line-height:1.8}
 .fix-no-followed .nff-icon{font-size:32px;opacity:0.25;display:block;margin-bottom:8px}
 
 /* ─── SECTION 3 ──────────────────────────────────────────── */
@@ -327,8 +358,15 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
 
 <div id="main-layout">
 
+  <!-- Mobile view switcher (hidden on desktop) -->
+  <div id="mobile-view-switcher">
+    <button class="mv-btn active" onclick="switchMobileView(1,this)">📋 Teams</button>
+    <button class="mv-btn" onclick="switchMobileView(2,this)">⚽ Fixtures</button>
+    <button class="mv-btn" onclick="switchMobileView(3,this)">📊 Stats</button>
+  </div>
+
   <!-- ══════ SECTION 1 ══════ -->
-  <div id="section1">
+  <div id="section1" class="mob-active">
     <div id="tz-panel">
       <div class="tz-label">Timezone</div>
       <select id="tz-select"></select>
@@ -339,14 +377,21 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
     </div>
     <div id="follow-bar">
       <div class="follow-count"><span id="follow-count-num">0</span> TEAM<span id="follow-plural">S</span> FOLLOWED</div>
-      <button id="clear-all-btn" disabled>CLEAR ALL</button>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button id="hide-teams-btn" class="collapse-btn" onclick="toggleFollowedList()" title="Show/hide team list">
+          <span class="collapse-chevron" id="chevron-teams">▲</span> HIDE
+        </button>
+        <button id="clear-all-btn" disabled>CLEAR ALL</button>
+      </div>
     </div>
+    <div id="team-list-collapsible">
     <div id="team-search-wrap">
       <input type="text" id="team-search" placeholder="Search teams…" autocomplete="off" spellcheck="false"/>
     </div>
     <div id="team-list-scroll">
       <div id="team-list-container"></div>
       <div id="no-results">No teams match your search.</div>
+    </div>
     </div>
   </div>
 
@@ -360,16 +405,21 @@ html,body{height:100%;overflow:hidden;background:var(--fifa-dark);color:var(--fg
     </div>
     <div id="s2-scroll">
       <div class="subsec-header" id="subsec21-hdr">
-        <div class="subsec-title"><span class="subsec-icon">📊</span> 2.1 — GROUP TABLES</div>
-        <button class="collapse-btn" onclick="toggleSubsec('subsec21')">
-          <span class="collapse-chevron" id="chevron-subsec21">▲</span> HIDE
-        </button>
+        <div class="subsec-title"><span class="subsec-icon">📊</span> GROUP TABLES</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button id="gt-filter-btn" onclick="toggleGroupFilter()" title="Show only groups containing your followed teams">
+            <span class="filter-star">⭐</span> MY TEAMS <span id="gt-filter-count">0</span>
+          </button>
+          <button class="collapse-btn" onclick="toggleSubsec('subsec21')">
+            <span class="collapse-chevron" id="chevron-subsec21">▲</span> HIDE
+          </button>
+        </div>
       </div>
       <div class="subsec-body" id="subsec21-body">
         <div id="group-tables-body"><div class="groups-grid" id="groups-grid"></div></div>
       </div>
       <div class="subsec-header" id="subsec22-hdr">
-        <div class="subsec-title"><span class="subsec-icon">📅</span> 2.2 — FIXTURE LIST</div>
+        <div class="subsec-title"><span class="subsec-icon">📅</span> FIXTURE LIST</div>
         <div id="fix-filter-wrap">
           <button id="fix-filter-btn" onclick="toggleFixFilter()" title="Show only fixtures featuring your followed teams">
             <span class="filter-star">⭐</span> MY TEAMS <span id="fix-filter-count">0</span>
@@ -452,7 +502,7 @@ const TEAMS = [
   ["CONMEBOL","Ecuador","🇪🇨",false],["CONMEBOL","Paraguay","🇵🇾",false],["CONMEBOL","Uruguay","🇺🇾",false],
   ["OFC","New Zealand","🇳🇿",false],
   ["UEFA","Austria","🇦🇹",false],["UEFA","Belgium","🇧🇪",false],["UEFA","Bosnia & Herz.","🇧🇦",false],
-  ["UEFA","Croatia","🇭🇷",false],["UEFA","Czechia","🇨🇿",false],["UEFA","England","EN",false],
+  ["UEFA","Croatia","🇭🇷",false],["UEFA","Czechia","🇨🇿",false],["UEFA","England","🏴",false],
   ["UEFA","France","🇫🇷",false],["UEFA","Germany","🇩🇪",false],["UEFA","Netherlands","🇳🇱",false],
   ["UEFA","Norway","🇳🇴",false],["UEFA","Portugal","🇵🇹",false],["UEFA","Scotland","🏴",false],
   ["UEFA","Spain","🇪🇸",false],["UEFA","Sweden","🇸🇪",false],["UEFA","Switzerland","🇨🇭",false],
@@ -463,7 +513,20 @@ const FLAG_MAP = Object.fromEntries(TEAMS.map(([,c,f])=>[c,f]));
 FLAG_MAP["England"] = "ENG";
 FLAG_MAP["Scotland"] = "SCO";
 
-// Render flag — if value is short text code, wrap in a styled badge; otherwise emit as emoji
+// Country codes for group table desktop display
+const COUNTRY_CODE = {
+  "Australia":"AU","Iran":"IR","Iraq":"IQ","Japan":"JP","Jordan":"JO","Qatar":"QA",
+  "Saudi Arabia":"SA","South Korea":"KR","Uzbekistan":"UZ","Algeria":"DZ","Cabo Verde":"CV",
+  "DR Congo":"CD","Egypt":"EG","Ghana":"GH","Ivory Coast":"CI","Morocco":"MA","Senegal":"SN",
+  "South Africa":"ZA","Tunisia":"TN","Canada":"CA","Curaçao":"CW","Haiti":"HT","Mexico":"MX",
+  "Panama":"PA","USA":"US","Argentina":"AR","Brazil":"BR","Colombia":"CO","Ecuador":"EC",
+  "Paraguay":"PY","Uruguay":"UY","New Zealand":"NZ","Austria":"AT","Belgium":"BE",
+  "Bosnia & Herz.":"BA","Croatia":"HR","Czechia":"CZ","England":"ENG","France":"FR",
+  "Germany":"DE","Netherlands":"NL","Norway":"NO","Portugal":"PT","Scotland":"SCO",
+  "Spain":"ES","Sweden":"SE","Switzerland":"CH","Türkiye":"TR",
+};
+
+// Render flag — used in fixtures, S3, S1 team list (always emoji/badge based on FLAG_MAP)
 function renderFlag(country, size='md'){
   const f = FLAG_MAP[country] || '🏳';
   if(f.length <= 4 && /^[A-Z]+$/.test(f)){
@@ -471,6 +534,19 @@ function renderFlag(country, size='md'){
     return `<span style="${fs};background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:3px;font-family:'Oswald',sans-serif;font-weight:700;color:#fff;letter-spacing:0.5px;line-height:1;display:inline-block">${f}</span>`;
   }
   return `<span style="${size==='lg'?'font-size:22px':size==='sm'?'font-size:12px':'font-size:18px'};line-height:1">${f}</span>`;
+}
+
+// Group table flag: emoji on mobile (gt-flag-mob), code badge on desktop (gt-code)
+function renderGroupFlag(country){
+  const emoji = FLAG_MAP[country] || '🏳';
+  const code  = COUNTRY_CODE[country] || country.slice(0,2).toUpperCase();
+  // Emoji flag span (mobile only)
+  const emojiHtml = (emoji.length > 4)
+    ? `<span class="gt-flag-mob" style="font-size:14px;line-height:1">${emoji}</span>`
+    : `<span class="gt-flag-mob" style="font-size:11px;padding:1px 3px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:3px;font-family:'Oswald',sans-serif;font-weight:700;color:#fff;letter-spacing:0.5px;line-height:1;display:inline-block">${emoji}</span>`;
+  // Code badge (desktop only)
+  const codeHtml = `<span class="gt-code" style="font-size:8px;padding:1px 4px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:3px;font-family:'Oswald',sans-serif;font-weight:700;color:#fff;letter-spacing:0.5px;line-height:1;white-space:nowrap">${code}</span>`;
+  return emojiHtml + codeHtml;
 }
 const CONF_MAP = Object.fromEntries(TEAMS.map(([conf,c])=>[c,conf]));
 
@@ -485,78 +561,20 @@ const RANKINGS = {
   "Iraq":45,"Jordan":46,"Haiti":47,"Uzbekistan":48,"DR Congo":49,"Cabo Verde":50,"Curaçao":51,
 };
 
-// ===============================================
-// LOAD GROUP STANDINGS FROM JSON
-// ===============================================
-
-let GROUPS_DATA = {};
-
-// Load groups.json
-async function loadGroupsData() {
-    try {
-        const res = await fetch('data/groups.json?' + Date.now());
-        if (!res.ok) throw new Error("groups.json not found");
-        
-        const json = await res.json();
-        GROUPS_DATA = {};
-        
-        json.groups.forEach(group => {
-            GROUPS_DATA[group.group] = group.table.map(team => [
-                team.team,
-                team.played || 0,
-                team.gf || 0,
-                team.ga || 0,
-                team.points || 0,
-                "active"
-            ]);
-        });
-        console.log("✅ Group standings loaded from JSON");
-    } catch (e) {
-        console.error("❌ Could not load groups.json:", e);
-    }
-}
-
-// Updated buildGroupTables using loaded data
-function buildGroupTables(){
-    const grid=document.getElementById('groups-grid');
-    grid.innerHTML='';
-    
-    Object.keys(GROUPS_DATA).sort().forEach(grp=>{
-        const sorted=[...GROUPS_DATA[grp]].sort((a,b)=>b[4]-a[4]||(b[2]-b[3])-(a[2]-a[3])||b[2]-a[2]);
-        const card=document.createElement('div');
-        card.className='group-card';
-        let rows='';
-        
-        sorted.forEach(([team,gp,gf,ga,pts,status],i)=>{
-            const gd=gf-ga;
-            const isF=followedTeams.has(team);
-            let nc='gt-name';
-            if(isF) nc+=' followed-name';
-            
-            const w = Math.floor(pts/3);
-            const d = pts - w*3;
-            const l = gp - w - d;
-            
-            rows+=`<tr${i===1?' class="advance-line"':''}>
-                <td><div class="gt-team-cell">
-                    <span class="gt-pos">${i+1}</span>
-                    ${renderFlag(team,'sm')}
-                    <span class="${nc}">${team}</span>
-                    <span class="gt-ranking">#${RANKINGS[team]||'—'}</span>
-                </div></td>
-                <td>${gp}</td>
-                <td class="gt-w">${w}</td>
-                <td class="gt-d">${d}</td>
-                <td class="gt-l">${l}</td>
-                <td>${gf}</td><td>${ga}</td>
-                <td>${gd>0?'+'+gd:gd}</td><td class="gt-pts">${pts}</td></tr>`;
-        });
-        
-        card.innerHTML=`<div class="group-card-header"><span class="group-label">GROUP ${grp}</span><span class="group-venue-hint">Group Stage</span></div>
-            <table class="group-table"><thead><tr><th>Team</th><th title="Games Played">GP</th><th title="Wins" style="color:#66BB6A">W</th><th title="Draws">D</th><th title="Losses" style="color:#FF6644">L</th><th title="Goals For">GF</th><th title="Goals Against">GA</th><th title="Goal Difference">GD</th><th title="Points">PTS</th></tr></thead><tbody>${rows}</tbody></table>`;
-        grid.appendChild(card);
-    });
-}
+const GROUPS_DATA = {
+  "A":[["Mexico",0,0,0,0,"active"],["South Africa",0,0,0,0,"active"],["South Korea",0,0,0,0,"active"],["Czechia",0,0,0,0,"active"]],
+  "B":[["Canada",0,0,0,0,"active"],["Bosnia & Herz.",0,0,0,0,"active"],["Qatar",0,0,0,0,"active"],["Switzerland",0,0,0,0,"active"]],
+  "C":[["Brazil",0,0,0,0,"active"],["Morocco",0,0,0,0,"active"],["Scotland",0,0,0,0,"active"],["Haiti",0,0,0,0,"active"]],
+  "D":[["USA",0,0,0,0,"active"],["Paraguay",0,0,0,0,"active"],["Australia",0,0,0,0,"active"],["Türkiye",0,0,0,0,"active"]],
+  "E":[["Germany",0,0,0,0,"active"],["Ivory Coast",0,0,0,0,"active"],["Ecuador",0,0,0,0,"active"],["Curaçao",0,0,0,0,"active"]],
+  "F":[["Netherlands",0,0,0,0,"active"],["Japan",0,0,0,0,"active"],["Sweden",0,0,0,0,"active"],["Tunisia",0,0,0,0,"active"]],
+  "G":[["Belgium",0,0,0,0,"active"],["Egypt",0,0,0,0,"active"],["Iran",0,0,0,0,"active"],["New Zealand",0,0,0,0,"active"]],
+  "H":[["Spain",0,0,0,0,"active"],["Saudi Arabia",0,0,0,0,"active"],["Uruguay",0,0,0,0,"active"],["Cabo Verde",0,0,0,0,"active"]],
+  "I":[["France",0,0,0,0,"active"],["Senegal",0,0,0,0,"active"],["Norway",0,0,0,0,"active"],["Iraq",0,0,0,0,"active"]],
+  "J":[["Argentina",0,0,0,0,"active"],["Algeria",0,0,0,0,"active"],["Austria",0,0,0,0,"active"],["Jordan",0,0,0,0,"active"]],
+  "K":[["Portugal",0,0,0,0,"active"],["Colombia",0,0,0,0,"active"],["Uzbekistan",0,0,0,0,"active"],["DR Congo",0,0,0,0,"active"]],
+  "L":[["England",0,0,0,0,"active"],["Croatia",0,0,0,0,"active"],["Ghana",0,0,0,0,"active"],["Panama",0,0,0,0,"active"]],
+};
 
 // Tournament stats – pre-tournament projected / placeholder data
 // [name, team, position, gp, goals, assists, yellow, red, mins]
@@ -845,6 +863,7 @@ const TIMEZONES = [
 let followedTeams = new Set();
 let selectedTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
 let fixFilterActive = false;
+let gtFilterActive = false;
 const subsecState = {subsec21:true,subsec22:true};
 const s3SubState  = {s3sub1:true,s3sub2:true};
 
@@ -897,6 +916,40 @@ function toggleS3Sub(id){
 function initSubsecHeights(){
   ['subsec21','subsec22'].forEach(id=>{document.getElementById(`${id}-body`).style.maxHeight='none';});
   ['s3sub1','s3sub2'].forEach(id=>{document.getElementById(`${id}-body`).style.maxHeight='none';});
+  // Init team list collapsible — use 'none' so it fills available flex space freely
+  const tlc = document.getElementById('team-list-collapsible');
+  tlc.style.maxHeight = 'none';
+  tlc.style.opacity = '1';
+}
+
+let teamsListVisible = true;
+function toggleFollowedList(){
+  teamsListVisible = !teamsListVisible;
+  const tlc = document.getElementById('team-list-collapsible');
+  const chevron = document.getElementById('chevron-teams');
+  const btn = document.getElementById('hide-teams-btn');
+  if(teamsListVisible){
+    // Remove collapsed class first, then clear max-height so it fills available space
+    tlc.classList.remove('collapsed');
+    tlc.style.maxHeight = 'none';
+    tlc.style.opacity = '1';
+    tlc.style.pointerEvents = '';
+    chevron.textContent = '▲';
+    btn.lastChild.textContent = ' HIDE';
+  } else {
+    // Snapshot current height, then animate to 0
+    tlc.style.maxHeight = tlc.scrollHeight + 'px';
+    tlc.style.opacity = '1';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        tlc.style.maxHeight = '0';
+        tlc.style.opacity = '0';
+        tlc.style.pointerEvents = 'none';
+      });
+    });
+    chevron.textContent = '▼';
+    btn.lastChild.textContent = ' SHOW';
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -913,10 +966,27 @@ function getDateSortKey(iso,tz){try{return new Date(iso).toLocaleDateString('en-
 function buildGroupTables(){
   const grid=document.getElementById('groups-grid');
   grid.innerHTML='';
-  Object.keys(GROUPS_DATA).sort().forEach(grp=>{
+
+  const isGtFiltered = gtFilterActive && followedTeams.size > 0;
+
+  // Determine which groups to show
+  const groupKeys = Object.keys(GROUPS_DATA).sort();
+  const visibleGroups = isGtFiltered
+    ? groupKeys.filter(grp => GROUPS_DATA[grp].some(([team])=>followedTeams.has(team)))
+    : groupKeys;
+
+  if(isGtFiltered && visibleGroups.length === 0){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:28px 16px;color:var(--fg-muted);font-size:12px;line-height:1.8"><span style="font-size:28px;opacity:0.2;display:block;margin-bottom:8px">📊</span>No groups found for your followed teams.<br>Select teams in Section 1.</div>`;
+    return;
+  }
+
+  visibleGroups.forEach(grp=>{
     const sorted=[...GROUPS_DATA[grp]].sort((a,b)=>b[4]-a[4]||(b[2]-b[3])-(a[2]-a[3])||b[2]-a[2]);
     const card=document.createElement('div');
     card.className='group-card';
+    // Highlight card border if any followed team is in this group
+    const hasFollowed = sorted.some(([team])=>followedTeams.has(team));
+    if(hasFollowed) card.style.borderColor='rgba(201,168,76,0.4)';
     let rows='';
     sorted.forEach(([team,gp,gf,ga,pts,status],i)=>{
       const gd=gf-ga;
@@ -925,14 +995,13 @@ function buildGroupTables(){
       if(status==='qualified')nc+=' qualified';
       if(status==='eliminated')nc+=' eliminated';
       if(isF)nc+=' followed-name';
-      // Derive W/D/L from pts and gp (W=3pts, D=1pt each)
       const w = Math.floor(pts/3);
       const d = pts - w*3;
       const l = gp - w - d;
       rows+=`<tr${i===1?' class="advance-line"':''}>
         <td><div class="gt-team-cell">
           <span class="gt-pos">${i+1}</span>
-          ${renderFlag(team,'sm')}
+          ${renderGroupFlag(team)}
           <span class="${nc}">${team}</span>
           <span class="gt-ranking">#${RANKINGS[team]||'—'}</span>
         </div></td>
@@ -947,6 +1016,26 @@ function buildGroupTables(){
       <table class="group-table"><thead><tr><th>Team</th><th title="Games Played">GP</th><th title="Wins" style="color:#66BB6A">W</th><th title="Draws">D</th><th title="Losses" style="color:#FF6644">L</th><th title="Goals For">GF</th><th title="Goals Against">GA</th><th title="Goal Difference">GD</th><th title="Points">PTS</th></tr></thead><tbody>${rows}</tbody></table>`;
     grid.appendChild(card);
   });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GROUP TABLE FILTER TOGGLE
+═══════════════════════════════════════════════════════════ */
+function toggleGroupFilter(){
+  gtFilterActive = !gtFilterActive;
+  document.getElementById('gt-filter-btn').classList.toggle('active', gtFilterActive);
+  buildGroupTables();
+}
+
+function updateGtFilterCount(){
+  document.getElementById('gt-filter-count').textContent = followedTeams.size;
+  const btn = document.getElementById('gt-filter-btn');
+  if(followedTeams.size === 0 && gtFilterActive){
+    gtFilterActive = false;
+    btn.classList.remove('active');
+  }
+  btn.style.opacity = followedTeams.size === 0 ? '0.35' : '1';
+  btn.style.cursor  = followedTeams.size === 0 ? 'default' : 'pointer';
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1155,7 +1244,7 @@ function buildTeamList(){
 function toggleFollow(country,row){
   if(followedTeams.has(country)){followedTeams.delete(country);row.classList.remove('followed','just-followed');}
   else{followedTeams.add(country);row.classList.add('followed');row.classList.remove('just-followed');void row.offsetWidth;row.classList.add('just-followed');setTimeout(()=>row.classList.remove('just-followed'),400);}
-  updateFollowBar();buildGroupTables();buildFixtures();buildTopPerformers();buildFanTeamPlayers();updateFixFilterCount();
+  updateFollowBar();buildGroupTables();buildFixtures();buildTopPerformers();buildFanTeamPlayers();updateFixFilterCount();updateGtFilterCount();
   if(followedTeams.size>0&&!s3SubState.s3sub2)toggleS3Sub('s3sub2');
 }
 function updateFollowBar(){
@@ -1167,7 +1256,7 @@ function updateFollowBar(){
 document.getElementById('clear-all-btn').addEventListener('click',()=>{
   followedTeams.clear();
   document.querySelectorAll('.team-row.followed').forEach(r=>r.classList.remove('followed'));
-  updateFollowBar();buildGroupTables();buildFixtures();buildTopPerformers();buildFanTeamPlayers();updateFixFilterCount();
+  updateFollowBar();buildGroupTables();buildFixtures();buildTopPerformers();buildFanTeamPlayers();updateFixFilterCount();updateGtFilterCount();
 });
 document.getElementById('team-search').addEventListener('input',function(){
   const q=this.value.toLowerCase().trim();let any=false;
@@ -1184,22 +1273,35 @@ function updateClock(){
   }catch(e){document.getElementById('live-clock').textContent=new Date().toLocaleTimeString();}
 }
 
-// Load data first, then build UI
-    async function initApp() {
-    await loadGroupsData();
-    buildTZSelector();
-    buildTeamList();
-    buildGroupTables();
-    buildFixtures();
-    buildTopPerformers();
-    buildFanTeamPlayers();
-    initSubsecHeights();
-    updateClock();
-    updateCountdown();
-    updateFixFilterCount();
+/* ═══════════════════════════════════════════════════════════
+   MOBILE VIEW SWITCHER
+═══════════════════════════════════════════════════════════ */
+function switchMobileView(n, btn){
+  [1,2,3].forEach(i=>{
+    const s=document.getElementById('section'+i);
+    if(s) s.classList.toggle('mob-active', i===n);
+  });
+  document.querySelectorAll('.mv-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Auto-detect mobile: if switcher is visible (display != none)
+  if(window.getComputedStyle(document.getElementById('mobile-view-switcher')).display !== 'none'){
+    // scroll to top of new section
+    const sec = document.getElementById('section'+n);
+    if(sec) sec.scrollTop = 0;
+  }
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+buildTZSelector();
+buildTeamList();
+buildGroupTables();
+buildFixtures();
+buildTopPerformers();
+buildFanTeamPlayers();
+initSubsecHeights();
+updateClock();
+updateCountdown();
+updateFixFilterCount();
+updateGtFilterCount();
 setInterval(updateClock,1000);
 setInterval(updateCountdown,1000);
 </script>
