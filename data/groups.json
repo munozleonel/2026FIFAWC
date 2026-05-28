@@ -1,1 +1,13 @@
-
+{
+  "groups": [
+    {
+      "group": "A",
+      "teams": ["Mexico", "South Africa", "South Korea", "Czech Republic"]
+    },
+    {
+      "group": "B",
+      "teams": ["Canada", "Bosnia & Herzegovina", "Qatar", "Switzerland"]
+    }
+    // Add the remaining 10 groups here...
+  ]
+}
