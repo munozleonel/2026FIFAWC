@@ -44,7 +44,7 @@ SEASON         = os.environ.get("SEASON", "2026")
 DATA_FILE      = Path(__file__).parent.parent / "data" / "live_data.json"
 BASE_URL       = "https://api-football-v1.p.rapidapi.com/v3"
 HEADERS        = {
-    "X-RapidAPI-Key":  API_KEY,
+    "x-apisports-key":  API_KEY,
     "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
 }
 
