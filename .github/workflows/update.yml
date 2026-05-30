@@ -1,0 +1,104 @@
+# .github/workflows/update.yml
+#
+# FIFA World Cup 2026 — Live Data Auto-Updater
+# ─────────────────────────────────────────────
+# Runs on a schedule AND can be triggered manually from the
+# GitHub Actions UI (workflow_dispatch).
+#
+# Required repository secrets (Settings → Secrets → Actions):
+#   API_FOOTBALL_KEY   — your RapidAPI key for api-football.com
+#   TOURNAMENT_ID      — league/tournament ID (use "1" for FIFA World Cup)
+#
+# The workflow:
+#   1. Runs the Python script  →  updates data/live_data.json
+#   2. Commits and pushes the changed JSON back to the repo
+#   3. GitHub Pages automatically re-deploys index.html with the new data
+
+name: Update World Cup Live Data
+
+on:
+  # ── Scheduled runs ───────────────────────────────────────────────────────
+  schedule:
+    # Every 3 hours during the tournament window (UTC)
+    - cron: "0 */3 * * *"
+
+    # Uncomment for every 30 minutes during active match days:
+    # - cron: "*/30 * * * *"
+
+  # ── Manual trigger from the GitHub Actions UI ─────────────────────────────
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual update (optional)"
+        required: false
+        default: "Manual refresh"
+
+  # ── Also run on push to main (keeps data fresh after you edit the page) ───
+  push:
+    branches: [main]
+    paths:
+      - "scripts/update_data.py"   # re-run if the script itself is updated
+      - "data/live_data.json"      # skip infinite loops — see step below
+
+# Cancel any in-progress run of the same workflow before starting a new one
+concurrency:
+  group: update-live-data
+  cancel-in-progress: true
+
+jobs:
+  update:
+    name: Fetch & commit live data
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to push the updated JSON back to the repo
+
+    steps:
+      # 1. Check out the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # 2. Set up Python
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests
+
+      # 4. Run the data update script
+      - name: Run update_data.py
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          TOURNAMENT_ID:    ${{ secrets.TOURNAMENT_ID }}
+          SEASON:           "2026"
+        run: python scripts/update_data.py
+
+      # 5. Check if the JSON actually changed (avoid empty commits)
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet data/live_data.json \
+            && echo "changed=false" >> $GITHUB_OUTPUT \
+            || echo "changed=true"  >> $GITHUB_OUTPUT
+
+      # 6. Commit and push only if data changed
+      - name: Commit updated data
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/live_data.json
+          git commit -m "chore: live data update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
+
+      # 7. Log when no update was needed
+      - name: No changes detected
+        if: steps.check_changes.outputs.changed == 'false'
+        run: echo "data/live_data.json unchanged — no commit needed."
