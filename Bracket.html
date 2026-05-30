@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FIFA World Cup 2026 — Bracket & Odds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B14; --bg2:#0C1220; --bg3:#111829; --bg4:#151E30;
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+  --gold:#D4A843; --gold2:#FFD166; --sky:#38BDF8;
+  --green:#22C55E; --red:#EF4444; --purple:#A78BFA; --orange:#FB923C;
+  --muted:#64748B; --muted2:#94A3B8; --fg:#F1F5F9; --fg2:#CBD5E1;
+  --card-w:148px; --card-h:54px; --gap-v:10px; --conn:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--fg);font-family:'Barlow',sans-serif}
+body{min-height:100vh;overflow-x:auto;overflow-y:auto;background:var(--bg)}
+
+/* noise */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+
+/* ─── HEADER ─── */
+#hdr{
+  position:sticky;top:0;z-index:200;
+  background:rgba(7,11,20,0.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(212,168,67,0.35);
+  padding:0 24px;height:58px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr-trophy{font-size:26px;filter:drop-shadow(0 0 10px rgba(212,168,67,0.6))}
+.hdr-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;
+  background:linear-gradient(135deg,#FFD166,#D4A843);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:-2px}
+.hdr-right{display:flex;align-items:center;gap:14px}
+.hdr-stat{text-align:center}
+.hdr-stat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold2);line-height:1}
+.hdr-stat-lbl{font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.hdr-sep{width:1px;height:26px;background:var(--border2)}
+.pulse-badge{display:flex;align-items:center;gap:5px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);padding:3px 9px;border-radius:3px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:#EF4444}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:#EF4444;animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ─── ODDS KEY ─── */
+#odds-key{
+  display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;
+  padding:5px 24px;background:rgba(212,168,67,0.04);border-bottom:1px solid rgba(212,168,67,0.1);
+  font-size:9.5px;color:var(--muted2);letter-spacing:.4px;position:relative;z-index:1;
+}
+.ok{display:flex;align-items:center;gap:5px}
+.ok-dot{width:7px;height:7px;border-radius:50%}
+
+/* ─── BRACKET SHELL ─── */
+#bracket-page{padding:20px 16px 60px;position:relative;z-index:1;min-width:1200px}
+
+/* ─── WINNER PANEL ─── */
+.winner-panel{
+  max-width:960px;margin:0 auto 24px;
+  background:var(--bg3);border:1px solid rgba(212,168,67,0.22);border-radius:10px;overflow:hidden;
+}
+.wp-hdr{
+  padding:8px 14px;background:rgba(212,168,67,0.08);border-bottom:1px solid rgba(212,168,67,0.15);
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;
+}
+.wp-grid{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px}
+.wp-team{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:5px;
+  background:rgba(0,0,0,0.25);border:1px solid var(--border);
+  cursor:default;transition:all .18s;min-width:130px;
+}
+.wp-team:hover{border-color:rgba(212,168,67,0.3);background:rgba(212,168,67,0.04)}
+.wp-flag{font-size:16px;line-height:1}
+.wp-name{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;color:var(--fg2);flex:1}
+.wp-odds{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--gold2)}
+.wp-prob{font-size:8.5px;color:var(--muted);min-width:30px;text-align:right}
+
+/* ─── STAGE LABEL ROW ─── */
+.stage-labels{
+  display:grid;
+  grid-template-columns: var(--card-w) var(--conn) var(--card-w) var(--conn) var(--card-w) var(--conn) var(--card-w) var(--conn) auto var(--conn) var(--card-w) var(--conn) var(--card-w) var(--conn) var(--card-w) var(--conn) var(--card-w);
+  gap:0;
+  margin-bottom:14px;
+  text-align:center;
+}
+.sl{
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;padding:4px 0;border-radius:4px;
+}
+.sl.r32   {color:var(--sky);background:rgba(56,189,248,0.07);border:1px solid rgba(56,189,248,0.15)}
+.sl.r16   {color:var(--purple);background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.15)}
+.sl.qf    {color:var(--gold);background:rgba(212,168,67,0.07);border:1px solid rgba(212,168,67,0.15)}
+.sl.sf    {color:var(--orange);background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.15)}
+.sl.fin   {color:var(--gold2);background:rgba(255,209,102,0.1);border:1px solid rgba(255,209,102,0.25)}
+.sl-conn  {/* spacer */}
+
+/* ─── BRACKET GRID ─── */
+#bracket{
+  display:grid;
+  /* L-R32 | gap | L-R16 | gap | L-QF | gap | L-SF | gap | FINAL | gap | R-SF | gap | R-QF | gap | R-R16 | gap | R-R32 */
+  grid-template-columns:
+    var(--card-w) var(--conn)
+    var(--card-w) var(--conn)
+    var(--card-w) var(--conn)
+    var(--card-w) var(--conn)
+    auto
+    var(--conn) var(--card-w)
+    var(--conn) var(--card-w)
+    var(--conn) var(--card-w)
+    var(--conn) var(--card-w);
+  grid-template-rows: auto;
+  gap:0;
+  align-items:start;
+}
+/* column index helpers */
+/* L-R32=1, L-R16=3, L-QF=5, L-SF=7, FINAL=9, R-SF=11, R-QF=13, R-R16=15, R-R32=17 */
+
+/* ─── MATCH COLUMN ─── */
+.mcol{
+  display:flex;flex-direction:column;
+  gap:0;
+  align-self:stretch;
+}
+
+/* ─── MATCH BLOCK ─── */
+.match-block{
+  display:flex;flex-direction:column;
+  position:relative;
+}
+.match-meta{
+  font-family:'Barlow Condensed',sans-serif;font-size:8.5px;color:var(--muted);
+  letter-spacing:.4px;margin-bottom:3px;display:flex;justify-content:space-between;
+  padding:0 2px;
+}
+.match-id{font-weight:700;color:var(--muted2)}
+.match-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  overflow:hidden;width:var(--card-w);
+  transition:border-color .18s,box-shadow .18s;cursor:default;
+}
+.match-card:hover{border-color:rgba(56,189,248,0.35);box-shadow:0 0 14px rgba(56,189,248,0.07)}
+.match-card.gold-card{border-color:rgba(212,168,67,0.4);box-shadow:0 0 18px rgba(212,168,67,0.08)}
+.team-row{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 7px;min-height:26px;
+  transition:background .13s;
+}
+.team-row:hover{background:rgba(255,255,255,0.025)}
+.team-row.fav{background:rgba(34,197,94,0.05)}
+.team-row.fav::before{content:'';position:absolute;width:2px;top:0;bottom:0;left:0;background:var(--green);border-radius:0 1px 1px 0}
+.tr-flag{font-size:13px;line-height:1;flex-shrink:0}
+.tr-code{
+  font-family:'Barlow Condensed',sans-serif;font-size:7.5px;font-weight:700;
+  padding:1px 3px;border-radius:2px;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.14);
+  color:#fff;letter-spacing:.4px;flex-shrink:0;
+}
+.tr-name{
+  font-family:'Barlow Condensed',sans-serif;font-size:11.5px;font-weight:600;
+  color:var(--fg);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:.2px;
+}
+.tr-name.tbd{color:var(--muted);font-style:italic;font-weight:400;font-size:10.5px}
+.tr-odds{
+  font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  flex-shrink:0;letter-spacing:.2px;
+}
+.tr-odds.fav{color:var(--green)}
+.tr-odds.und{color:var(--muted2)}
+.team-divider{height:1px;background:var(--border)}
+.odds-bar{padding:3px 6px 4px;background:rgba(0,0,0,0.2)}
+.bar-track{height:3px;border-radius:3px;background:rgba(255,255,255,0.05);position:relative;overflow:hidden}
+.bar-home{position:absolute;left:0;top:0;height:100%;border-radius:3px 0 0 3px;background:linear-gradient(90deg,#15803D,#22C55E)}
+.bar-away{position:absolute;right:0;top:0;height:100%;border-radius:0 3px 3px 0;background:linear-gradient(90deg,#DC2626,#EF4444)}
+.bar-pcts{display:flex;justify-content:space-between;margin-top:2px}
+.bar-pct{font-size:7.5px;letter-spacing:.2px}
+.bar-pct.h{color:#4ADE80}.bar-pct.a{color:#F87171}.bar-pct.d{color:var(--muted);font-size:7px}
+
+/* spacer between matches in same column */
+.match-spacer{flex-shrink:0}
+
+/* ─── CONNECTOR COLUMN ─── */
+.conn-col{
+  position:relative;align-self:stretch;
+  display:flex;flex-direction:column;
+}
+.conn-line{
+  position:absolute;
+  border-color:rgba(56,189,248,0.2);
+  border-style:solid;
+}
+
+/* ─── FINAL CARD ─── */
+.final-col{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 8px;
+}
+.final-card{
+  background:linear-gradient(135deg,rgba(212,168,67,0.1),rgba(212,168,67,0.04));
+  border:1px solid rgba(212,168,67,0.4);border-radius:10px;overflow:hidden;
+  width:200px;box-shadow:0 0 40px rgba(212,168,67,0.12);
+}
+.final-head{
+  padding:8px 12px;background:rgba(212,168,67,0.12);
+  border-bottom:1px solid rgba(212,168,67,0.2);
+  text-align:center;
+}
+.final-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--gold2)}
+.final-date{font-size:8.5px;color:var(--muted2);letter-spacing:.4px;margin-top:1px}
+.final-team{display:flex;align-items:center;gap:7px;padding:8px 12px}
+.final-flag{font-size:18px;line-height:1}
+.final-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--fg);flex:1}
+.final-name.tbd{color:var(--muted);font-style:italic;font-weight:400;font-size:13px}
+.final-odds{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--gold2)}
+.final-divider{height:1px;background:rgba(212,168,67,0.2);margin:0 12px}
+.final-trophy-row{
+  padding:6px;text-align:center;
+  font-size:18px;animation:glow 3s infinite;
+}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 4px rgba(212,168,67,.4))}50%{filter:drop-shadow(0 0 12px rgba(212,168,67,.9))}}
+.third-card{
+  width:200px;margin-top:14px;
+  background:var(--bg3);border:1px solid rgba(167,139,250,0.25);border-radius:8px;overflow:hidden;
+}
+.third-head{
+  padding:5px 10px;background:rgba(167,139,250,0.08);border-bottom:1px solid rgba(167,139,250,0.15);
+  text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--purple);
+}
+.third-date{font-size:8px;color:var(--muted);margin-top:1px}
+.third-teams{padding:4px 0}
+.third-team{display:flex;align-items:center;gap:6px;padding:5px 10px}
+.third-flag{font-size:14px;line-height:1}
+.third-name{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;color:var(--fg2);flex:1}
+.third-name.tbd{color:var(--muted);font-style:italic;font-weight:400;font-size:11px}
+
+/* source */
+.src{text-align:center;padding:14px;font-size:9px;color:var(--muted);letter-spacing:.4px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="hdr">
+  <div class="hdr-left">
+    <span class="hdr-trophy">🏆</span>
+    <div>
+      <div class="hdr-title">FIFA World Cup 2026 — Bracket</div>
+      <div class="hdr-sub">Official Knockout Draw · Live Odds</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-stat"><div class="hdr-stat-val" id="cd-d">--</div><div class="hdr-stat-lbl">Days</div></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-stat"><div class="hdr-stat-val" id="cd-h">--</div><div class="hdr-stat-lbl">Hours</div></div>
+    <div class="hdr-sep"></div>
+    <div class="hdr-stat"><div class="hdr-stat-val" id="cd-m">--</div><div class="hdr-stat-lbl">Mins</div></div>
+    <div class="hdr-sep"></div>
+    <div class="pulse-badge"><span class="pulse-dot"></span>PRE-TOURNAMENT</div>
+  </div>
+</div>
+
+<!-- ODDS KEY -->
+<div id="odds-key">
+  <div class="ok"><span class="ok-dot" style="background:var(--green)"></span>Favourite (≥60%)</div>
+  <div class="ok"><span class="ok-dot" style="background:var(--gold)"></span>Likely (40–60%)</div>
+  <div class="ok"><span class="ok-dot" style="background:var(--sky)"></span>Possible (20–40%)</div>
+  <div class="ok"><span class="ok-dot" style="background:var(--muted)"></span>Longshot (&lt;20%)</div>
+  <span style="margin-left:auto;font-size:8.5px;color:var(--muted)">Odds: DraftKings/FanDuel · May 2026</span>
+</div>
+
+<div id="bracket-page">
+
+  <!-- WINNER PANEL -->
+  <div class="winner-panel">
+    <div class="wp-hdr">🏆 Outright Tournament Winner Odds — DraftKings Sportsbook</div>
+    <div class="wp-grid" id="winner-grid"></div>
+  </div>
+
+  <!-- BRACKET -->
+  <div id="bracket-outer"></div>
+
+</div>
+
+<div class="src">Bracket structure per official FIFA World Cup 2026 regulations · Odds: DraftKings/FanDuel May 2026 · Subject to change · 18+ Gamble Responsibly</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+const T = {
+  "Spain":        {f:"🇪🇸",c:"ES",win:"+450"},
+  "France":       {f:"🇫🇷",c:"FR",win:"+500"},
+  "England":      {f:"🏴", c:"ENG",win:"+600"},
+  "Brazil":       {f:"🇧🇷",c:"BR",win:"+700"},
+  "Argentina":    {f:"🇦🇷",c:"AR",win:"+900"},
+  "Portugal":     {f:"🇵🇹",c:"PT",win:"+1000"},
+  "Germany":      {f:"🇩🇪",c:"DE",win:"+1000"},
+  "Netherlands":  {f:"🇳🇱",c:"NL",win:"+1200"},
+  "Belgium":      {f:"🇧🇪",c:"BE",win:"+1300"},
+  "Croatia":      {f:"🇭🇷",c:"HR",win:"+1400"},
+  "Morocco":      {f:"🇲🇦",c:"MA",win:"+1400"},
+  "Norway":       {f:"🇳🇴",c:"NO",win:"+2200"},
+  "Austria":      {f:"🇦🇹",c:"AT",win:"+2200"},
+  "Colombia":     {f:"🇨🇴",c:"CO",win:"+2500"},
+  "Uruguay":      {f:"🇺🇾",c:"UY",win:"+3000"},
+  "Japan":        {f:"🇯🇵",c:"JP",win:"+2800"},
+  "Mexico":       {f:"🇲🇽",c:"MX",win:"+1800"},
+  "Switzerland":  {f:"🇨🇭",c:"CH",win:"+2500"},
+  "USA":          {f:"🇺🇸",c:"US",win:"+6500"},
+  "Australia":    {f:"🇦🇺",c:"AU",win:"+4000"},
+  "Türkiye":      {f:"🇹🇷",c:"TR",win:"+2200"},
+  "Ivory Coast":  {f:"🇨🇮",c:"CI",win:"+6500"},
+  "Sweden":       {f:"🇸🇪",c:"SE",win:"+3000"},
+  "Senegal":      {f:"🇸🇳",c:"SN",win:"+4500"},
+  "South Korea":  {f:"🇰🇷",c:"KR",win:"+3500"},
+  "Ecuador":      {f:"🇪🇨",c:"EC",win:"+5500"},
+  "Iran":         {f:"🇮🇷",c:"IR",win:"+8000"},
+  "Ghana":        {f:"🇬🇭",c:"GH",win:"+8000"},
+  "Egypt":        {f:"🇪🇬",c:"EG",win:"+9000"},
+  "Canada":       {f:"🇨🇦",c:"CA",win:"+3500"},
+  "Algeria":      {f:"🇩🇿",c:"DZ",win:"+6000"},
+  "Tunisia":      {f:"🇹🇳",c:"TN",win:"+10000"},
+};
+
+function td(name){return T[name]||{f:"🏳",c:"??",win:"+9999"}}
+function imp(o){const n=parseFloat(o);if(isNaN(n))return .5;return n>0?100/(n+100):(-n)/(-n+100)}
+
+// Official R32 bracket (matches 73-88)
+// Left side: M74,M77,M73,M75,M83,M84,M81,M82
+// Right side: M76,M78,M79,M80,M86,M88,M85,M87
+// (mirroring the official FIFA wall-chart left/right split)
+
+// Format: {id, date, h, a, hO, aO, dO, venue}
+// h/a can be "Team" or a description like "1E / 3ABCDF"
+const LEFT_R32 = [
+  {id:"M74", date:"06/30/2026", time:"06:30", h:"1E",        a:"3ABCDF",     hTeam:"Germany",     aTeam:"TBD 3rd",   hO:"-260",aO:"+700",dO:"+380", v:"Boston"},
+  {id:"M77", date:"07/01/2026", time:"07:00", h:"1I",        a:"3CDFGH",     hTeam:"France",      aTeam:"TBD 3rd",   hO:"-320",aO:"+840",dO:"+400", v:"New York/NJ"},
+  {id:"M73", date:"06/29/2026", time:"05:00", h:"2A",        a:"2B",         hTeam:"Mexico",      aTeam:"Switzerland",hO:"+110",aO:"-130",dO:"+270", v:"Los Angeles"},
+  {id:"M75", date:"06/30/2026", time:"11:00", h:"1F",        a:"2C",         hTeam:"Netherlands", aTeam:"Morocco",   hO:"-160",aO:"+440",dO:"+290", v:"Guadalupe"},
+  {id:"M83", date:"07/03/2026", time:"09:00", h:"2K",        a:"2L",         hTeam:"Colombia",    aTeam:"Croatia",   hO:"-120",aO:"+340",dO:"+260", v:"Toronto"},
+  {id:"M84", date:"07/03/2026", time:"05:00", h:"1H",        a:"2J",         hTeam:"Spain",       aTeam:"Austria",   hO:"-160",aO:"+440",dO:"+290", v:"Los Angeles"},
+  {id:"M81", date:"07/02/2026", time:"10:00", h:"1D",        a:"3BEFIJ",     hTeam:"USA",         aTeam:"TBD 3rd",   hO:"-200",aO:"+560",dO:"+340", v:"Santa Clara"},
+  {id:"M82", date:"07/02/2026", time:"06:00", h:"1G",        a:"3AEHIJ",     hTeam:"Belgium",     aTeam:"TBD 3rd",   hO:"-260",aO:"+700",dO:"+380", v:"Seattle"},
+];
+const RIGHT_R32 = [
+  {id:"M76", date:"06/30/2026", time:"03:00", h:"1C",        a:"2F",         hTeam:"Brazil",      aTeam:"Japan",     hO:"-200",aO:"+540",dO:"+350", v:"Philadelphia"},
+  {id:"M78", date:"07/01/2026", time:"03:00", h:"2E",        a:"2I",         hTeam:"Ivory Coast", aTeam:"Norway",    hO:"+110",aO:"-130",dO:"+260", v:"Arlington"},
+  {id:"M79", date:"07/01/2026", time:"11:00", h:"1A",        a:"3CEFHI",     hTeam:"Mexico",      aTeam:"TBD 3rd",   hO:"-180",aO:"+500",dO:"+330", v:"Mexico City"},
+  {id:"M80", date:"07/02/2026", time:"02:00", h:"1L",        a:"3EHIJK",     hTeam:"England",     aTeam:"TBD 3rd",   hO:"-280",aO:"+760",dO:"+390", v:"Atlanta"},
+  {id:"M86", date:"07/04/2026", time:"08:00", h:"1J",        a:"2H",         hTeam:"Argentina",   aTeam:"Uruguay",   hO:"-180",aO:"+490",dO:"+320", v:"Miami"},
+  {id:"M88", date:"07/04/2026", time:"04:00", h:"2D",        a:"2G",         hTeam:"Australia",   aTeam:"Iran",      hO:"-140",aO:"+390",dO:"+270", v:"Arlington"},
+  {id:"M85", date:"07/03/2026", time:"13:00", h:"1B",        a:"3EFGIJ",     hTeam:"Switzerland", aTeam:"TBD 3rd",   hO:"-150",aO:"+420",dO:"+280", v:"Vancouver"},
+  {id:"M87", date:"07/04/2026", time:"11:30", h:"1K",        a:"3DEIJL",     hTeam:"Portugal",    aTeam:"TBD 3rd",   hO:"-280",aO:"+760",dO:"+390", v:"Kansas City"},
+];
+
+const LEFT_R16 = [
+  {id:"M89", date:"07/05/2026", time:"07:00", h:"W M74",  a:"W M77", hTeam:"Germany",     aTeam:"France",    hO:"-130",aO:"+360",dO:"+270", v:"Philadelphia"},
+  {id:"M90", date:"07/05/2026", time:"03:00", h:"W M73",  a:"W M75", hTeam:"Switzerland", aTeam:"Netherlands",hO:"+200",aO:"-250",dO:"+350",v:"Houston"},
+  {id:"M93", date:"07/07/2026", time:"05:00", h:"W M83",  a:"W M84", hTeam:"Colombia",    aTeam:"Spain",     hO:"+220",aO:"-270",dO:"+360", v:"Arlington"},
+  {id:"M94", date:"07/07/2026", time:"10:00", h:"W M81",  a:"W M82", hTeam:"USA",         aTeam:"Belgium",   hO:"+120",aO:"-140",dO:"+265", v:"Seattle"},
+];
+const RIGHT_R16 = [
+  {id:"M91", date:"07/06/2026", time:"06:00", h:"W M76",  a:"W M78", hTeam:"Brazil",      aTeam:"Norway",    hO:"-220",aO:"+600",dO:"+360", v:"New York/NJ"},
+  {id:"M92", date:"07/06/2026", time:"10:00", h:"W M79",  a:"W M80", hTeam:"Mexico",      aTeam:"England",   hO:"+310",aO:"-390",dO:"+390", v:"Seattle"},
+  {id:"M95", date:"07/08/2026", time:"02:00", h:"W M86",  a:"W M88", hTeam:"Argentina",   aTeam:"Australia", hO:"-240",aO:"+660",dO:"+360", v:"Miami"},
+  {id:"M96", date:"07/08/2026", time:"06:00", h:"W M85",  a:"W M87", hTeam:"Switzerland", aTeam:"Portugal",  hO:"+190",aO:"-230",dO:"+340", v:"Kansas City"},
+];
+
+const LEFT_QF = [
+  {id:"M97", date:"07/10/2026", time:"06:00", h:"W M89",  a:"W M90", hTeam:"France",      aTeam:"Netherlands",hO:"-140",aO:"+390",dO:"+270",v:"New York/NJ"},
+  {id:"M98", date:"07/11/2026", time:"05:00", h:"W M93",  a:"W M94", hTeam:"Spain",       aTeam:"Belgium",   hO:"-180",aO:"+500",dO:"+330", v:"Dallas"},
+];
+const RIGHT_QF = [
+  {id:"M99", date:"07/12/2026", time:"07:00", h:"W M91",  a:"W M92", hTeam:"Brazil",      aTeam:"England",   hO:"-160",aO:"+440",dO:"+290", v:"New York/NJ"},
+  {id:"M100",date:"07/12/2026", time:"11:00", h:"W M95",  a:"W M96", hTeam:"Argentina",   aTeam:"Portugal",  hO:"-180",aO:"+500",dO:"+330", v:"Houston"},
+];
+
+const LEFT_SF  = [{id:"M101",date:"07/15/2026",time:"05:00",h:"W M97", a:"W M98", hTeam:"France",    aTeam:"Spain",    hO:"+110",aO:"-130",dO:"+265",v:"New York/NJ"}];
+const RIGHT_SF = [{id:"M102",date:"07/16/2026",time:"05:00",h:"W M99", a:"W M100",hTeam:"Brazil",    aTeam:"Argentina",hO:"-130",aO:"+360",dO:"+270",v:"Dallas"}];
+
+const FINAL    = {id:"M104",date:"07/20/2026",time:"05:00",h:"W M101",a:"W M102",hTeam:"Spain",    aTeam:"Brazil",   hO:"+130",aO:"-150",dO:"+270",v:"MetLife Stadium"};
+const THIRD    = {id:"M103",date:"07/19/2026",time:"07:00",h:"RU M101",a:"RU M102",hTeam:"France", aTeam:"Argentina",v:"Dallas"};
+
+const WINNER_ODDS=[
+  {name:"Spain",f:"🇪🇸",o:"+450",p:18.2},{name:"France",f:"🇫🇷",o:"+500",p:16.7},
+  {name:"England",f:"🏴",o:"+600",p:14.3},{name:"Brazil",f:"🇧🇷",o:"+700",p:12.5},
+  {name:"Argentina",f:"🇦🇷",o:"+900",p:10.0},{name:"Portugal",f:"🇵🇹",o:"+1000",p:9.1},
+  {name:"Germany",f:"🇩🇪",o:"+1000",p:9.1},{name:"Netherlands",f:"🇳🇱",o:"+1200",p:7.7},
+  {name:"Belgium",f:"🇧🇪",o:"+1300",p:7.1},{name:"Croatia",f:"🇭🇷",o:"+1400",p:6.7},
+  {name:"Morocco",f:"🇲🇦",o:"+1400",p:6.7},{name:"Norway",f:"🇳🇴",o:"+2200",p:4.3},
+  {name:"Austria",f:"🇦🇹",o:"+2200",p:4.3},{name:"Colombia",f:"🇨🇴",o:"+2500",p:3.8},
+  {name:"Uruguay",f:"🇺🇾",o:"+3000",p:3.2},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   WINNER PANEL
+═══════════════════════════════════════════════════════════════ */
+function buildWinners(){
+  const g=document.getElementById('winner-grid');
+  const max=WINNER_ODDS[0].p;
+  WINNER_ODDS.forEach(({name,f,o,p})=>{
+    const div=document.createElement('div');div.className='wp-team';
+    div.innerHTML=`<span class="wp-flag">${f}</span><span class="wp-name">${name}</span><span class="wp-odds">${o}</span><span class="wp-prob">${p.toFixed(1)}%</span>`;
+    g.appendChild(div);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUILD MATCH CARD
+═══════════════════════════════════════════════════════════════ */
+function matchCard(fix, gold=false){
+  const{id,date,time,h,a,hTeam,aTeam,hO,aO,dO,v}=fix;
+  const hd=T[hTeam]; const ad=T[aTeam];
+  const hP=imp(hO), aP=imp(aO), dP=dO?imp(dO):0;
+  const tot=hP+aP+dP;
+  const hPct=hP/tot, aPct=aP/tot, dPct=dP/tot;
+  const hFav=hPct>aPct;
+  const hTBD=!hd;const aTBD=!ad;
+
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`
+    <div class="match-meta">
+      <span class="match-id">${id}</span>
+      <span>${date} ${time} · ${v}</span>
+    </div>
+    <div class="match-card${gold?' gold-card':''}">
+      <div class="team-row${hFav?' fav':''}">
+        <span class="tr-flag">${hd?hd.f:'🏳'}</span>
+        ${hd?`<span class="tr-code">${hd.c}</span>`:''}
+        <span class="tr-name${hTBD?' tbd':''}">${hTBD?h:hTeam}</span>
+        <span class="tr-odds ${hFav?'fav':'und'}">${hO}</span>
+      </div>
+      <div class="team-divider"></div>
+      <div class="team-row${!hFav?' fav':''}">
+        <span class="tr-flag">${ad?ad.f:'🏳'}</span>
+        ${ad?`<span class="tr-code">${ad.c}</span>`:''}
+        <span class="tr-name${aTBD?' tbd':''}">${aTBD?a:aTeam}</span>
+        <span class="tr-odds ${!hFav?'fav':'und'}">${aO}</span>
+      </div>
+      <div class="odds-bar">
+        <div class="bar-track">
+          <div class="bar-home" style="width:${(hPct*100).toFixed(1)}%"></div>
+          <div class="bar-away" style="width:${(aPct*100).toFixed(1)}%"></div>
+        </div>
+        <div class="bar-pcts">
+          <span class="bar-pct h">${(hPct*100).toFixed(0)}%</span>
+          <span class="bar-pct d">Draw ${(dPct*100).toFixed(0)}%</span>
+          <span class="bar-pct a">${(aPct*100).toFixed(0)}%</span>
+        </div>
+      </div>
+    </div>`;
+  return wrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BRACKET LAYOUT
+   We render using an HTML table for precise alignment matching
+   the official FIFA wall-chart: R32 | R16 | QF | SF | FINAL | SF | QF | R16 | R32
+═══════════════════════════════════════════════════════════════ */
+function buildBracket(){
+  const outer=document.getElementById('bracket-outer');
+
+  // Stage label row
+  const labelRow=document.createElement('div');
+  labelRow.style.cssText='display:grid;grid-template-columns:148px 20px 148px 20px 148px 20px 148px 20px 1fr 20px 148px 20px 148px 20px 148px 20px 148px;margin-bottom:12px;text-align:center;gap:0';
+  const stages=[
+    {t:'Round of 32',cls:'r32'},{t:'',cls:''},
+    {t:'Round of 16',cls:'r16'},{t:'',cls:''},
+    {t:'Quarter-Final',cls:'qf'},{t:'',cls:''},
+    {t:'Semi-Final',cls:'sf'},{t:'',cls:''},
+    {t:'FINAL',cls:'fin'},{t:'',cls:''},
+    {t:'Semi-Final',cls:'sf'},{t:'',cls:''},
+    {t:'Quarter-Final',cls:'qf'},{t:'',cls:''},
+    {t:'Round of 16',cls:'r16'},{t:'',cls:''},
+    {t:'Round of 32',cls:'r32'},
+  ];
+  stages.forEach(({t,cls})=>{
+    const s=document.createElement('div');
+    s.style.fontSize='10px';s.style.fontFamily="'Barlow Condensed',sans-serif";
+    s.style.fontWeight='700';s.style.letterSpacing='1.5px';s.style.textTransform='uppercase';
+    s.style.padding='3px 2px';s.style.borderRadius='3px';
+    if(cls==='r32'){s.style.color='#38BDF8';s.style.background='rgba(56,189,248,0.07)';s.style.border='1px solid rgba(56,189,248,0.15)'}
+    else if(cls==='r16'){s.style.color='#A78BFA';s.style.background='rgba(167,139,250,0.07)';s.style.border='1px solid rgba(167,139,250,0.15)'}
+    else if(cls==='qf'){s.style.color='#D4A843';s.style.background='rgba(212,168,67,0.07)';s.style.border='1px solid rgba(212,168,67,0.15)'}
+    else if(cls==='sf'){s.style.color='#FB923C';s.style.background='rgba(251,146,60,0.07)';s.style.border='1px solid rgba(251,146,60,0.15)'}
+    else if(cls==='fin'){s.style.color='#FFD166';s.style.background='rgba(255,209,102,0.1)';s.style.border='1px solid rgba(255,209,102,0.25)'}
+    s.textContent=t;
+    labelRow.appendChild(s);
+  });
+  outer.appendChild(labelRow);
+
+  // We build the bracket as a CSS grid using absolute positioning within a positioned container
+  // Each match slot is placed at a calculated vertical position
+
+  // Card dimensions
+  const CW=148, CH=82, GAP=10;
+  // Row heights per round (vertical spacing between match pairs)
+  // R32: 8 matches per side -> spacing = CH+GAP
+  // R16: 4 matches -> 2*(CH+GAP) spacing
+  // QF:  2 matches -> 4*(CH+GAP) spacing
+  // SF:  1 match   -> 8*(CH+GAP) spacing
+  const unit=CH+GAP; // 92px per slot
+
+  // Total height needed
+  const totalH = 8*unit + CH + 60; // 8 pairs + some padding
+
+  // Column x positions (including 20px connector gaps)
+  const colX = [
+    0,            // L-R32
+    CW+20,        // L-R16
+    CW*2+40,      // L-QF
+    CW*3+60,      // L-SF
+    CW*4+90,      // FINAL (center, wider)
+    CW*4+90+220+20, // R-SF
+    CW*5+90+220+40, // R-QF
+    CW*6+90+220+60, // R-R16
+    CW*7+90+220+80, // R-R32
+  ];
+
+  const totalW = colX[8]+CW+10;
+
+  const container=document.createElement('div');
+  container.style.cssText=`position:relative;width:${totalW}px;height:${totalH}px;margin:0 auto`;
+
+  // Helper: place a match block
+  function placeMatch(fix, colIdx, topPx, gold=false){
+    const el=matchCard(fix,gold);
+    el.style.cssText=`position:absolute;left:${colX[colIdx]}px;top:${topPx}px;width:${CW}px`;
+    container.appendChild(el);
+    return topPx+CH; // bottom of card
+  }
+
+  // Helper: draw SVG connectors
+  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+  svg.setAttribute("width",totalW);svg.setAttribute("height",totalH);
+  svg.style.cssText="position:absolute;left:0;top:0;pointer-events:none;z-index:0";
+
+  function line(x1,y1,x2,y2,col='rgba(56,189,248,0.18)',w=1.5){
+    const l=document.createElementNS("http://www.w3.org/2000/svg","polyline");
+    l.setAttribute("points",`${x1},${y1} ${x2},${y2}`);
+    l.setAttribute("stroke",col);l.setAttribute("stroke-width",w);l.setAttribute("fill","none");
+    svg.appendChild(l);
+  }
+  function bracket_connector(fromX,fromTop1,fromTop2,toX,toY,dir='right',col='rgba(56,189,248,0.18)'){
+    // Connects two input cards (from) to one output card (to)
+    const mid1=fromTop1+CH/2+20; // approx mid of card
+    const mid2=fromTop2+CH/2+20;
+    const midY=(mid1+mid2)/2;
+    const midX=(fromX+toX)/2;
+    if(dir==='right'){
+      // Right-going: line right from each card, vertical join, line right to next
+      line(fromX+CW,mid1,midX,mid1,col);
+      line(fromX+CW,mid2,midX,mid2,col);
+      line(midX,mid1,midX,mid2,col);
+      line(midX,midY,toX,midY,col);
+    } else {
+      // Left-going
+      line(fromX,mid1,midX,mid1,col);
+      line(fromX,mid2,midX,mid2,col);
+      line(midX,mid1,midX,mid2,col);
+      line(midX,midY,toX+CW,midY,col);
+    }
+  }
+
+  // ─── LEFT SIDE R32 ───
+  // 8 matches, each occupies 1 unit of vertical space, in pairs
+  const metaH=18; // height of meta row above card
+  const lR32tops=[0,unit,unit*2,unit*3,unit*4,unit*5,unit*6,unit*7].map(y=>y+metaH);
+  LEFT_R32.forEach((fix,i)=>placeMatch(fix,0,lR32tops[i]));
+
+  // ─── LEFT SIDE R16 ─── (4 matches, each spans 2 R32 slots)
+  const lR16tops=[
+    (lR32tops[0]+lR32tops[1])/2+CH/4,
+    (lR32tops[2]+lR32tops[3])/2+CH/4,
+    (lR32tops[4]+lR32tops[5])/2+CH/4,
+    (lR32tops[6]+lR32tops[7])/2+CH/4,
+  ];
+  LEFT_R16.forEach((fix,i)=>placeMatch(fix,1,lR16tops[i]));
+
+  // Connectors: R32 → R16 (left)
+  LEFT_R32.forEach((fix,i)=>{
+    if(i%2===0){
+      bracket_connector(colX[0],lR32tops[i],lR32tops[i+1],colX[1],lR16tops[i/2]);
+    }
+  });
+
+  // ─── LEFT SIDE QF ───
+  const lQFtops=[
+    (lR16tops[0]+lR16tops[1])/2+CH/4,
+    (lR16tops[2]+lR16tops[3])/2+CH/4,
+  ];
+  LEFT_QF.forEach((fix,i)=>placeMatch(fix,2,lQFtops[i],true));
+
+  LEFT_R16.forEach((fix,i)=>{
+    if(i%2===0){
+      bracket_connector(colX[1],lR16tops[i],lR16tops[i+1],colX[2],lQFtops[i/2],'right','rgba(167,139,250,0.2)');
+    }
+  });
+
+  // ─── LEFT SIDE SF ───
+  const lSFtop=(lQFtops[0]+lQFtops[1])/2+CH/4;
+  placeMatch(LEFT_SF[0],3,lSFtop,true);
+
+  bracket_connector(colX[2],lQFtops[0],lQFtops[1],colX[3],lSFtop,'right','rgba(212,168,67,0.25)');
+
+  // ─── FINAL ───
+  const finalTop=(lSFtop+lSFtop)/2; // centre roughly
+  const rSFtop=lSFtop; // mirror
+  const finalMid=(lSFtop+CH/2+20+metaH);
+  const rSFmid=rSFtop+CH/2+20+metaH;
+  const finalY=(finalMid+rSFmid)/2-CH/2-10;
+
+  // Final card (wider, in the middle column)
+  const finalCol=colX[4];
+  const finalEl=document.createElement('div');
+  finalEl.style.cssText=`position:absolute;left:${finalCol}px;top:${finalY+metaH}px;width:210px;`;
+  finalEl.innerHTML=`
+    <div class="match-meta" style="justify-content:center">
+      <span class="match-id" style="color:var(--gold)">${FINAL.id}</span>
+      <span>&nbsp;${FINAL.date} ${FINAL.time}</span>
+    </div>
+    <div class="final-card">
+      <div class="final-head">
+        <div class="final-title">⚽ THE FINAL</div>
+        <div class="final-date">${FINAL.v} · ${FINAL.date}</div>
+      </div>
+      <div class="final-team">
+        <span class="final-flag">${T[FINAL.hTeam]?.f||'🏳'}</span>
+        <span class="final-name">${FINAL.hTeam}</span>
+        <span class="final-odds">${FINAL.hO}</span>
+      </div>
+      <div class="final-divider"></div>
+      <div class="final-team">
+        <span class="final-flag">${T[FINAL.aTeam]?.f||'🏳'}</span>
+        <span class="final-name">${FINAL.aTeam}</span>
+        <span class="final-odds">${FINAL.aO}</span>
+      </div>
+      <div class="final-trophy-row">🏆</div>
+    </div>`;
+  container.appendChild(finalEl);
+
+  // Third place
+  const thirdEl=document.createElement('div');
+  thirdEl.style.cssText=`position:absolute;left:${finalCol}px;top:${finalY+CH+80}px;width:210px;`;
+  thirdEl.innerHTML=`
+    <div class="third-card">
+      <div class="third-head">Play-off for 3rd Place<div class="third-date">${THIRD.date} · ${THIRD.v}</div></div>
+      <div class="third-teams">
+        <div class="third-team"><span class="third-flag">${T[THIRD.hTeam]?.f||'🏳'}</span><span class="third-name">${THIRD.hTeam}</span></div>
+        <div style="height:1px;background:var(--border);margin:0 10px"></div>
+        <div class="third-team"><span class="third-flag">${T[THIRD.aTeam]?.f||'🏳'}</span><span class="third-name">${THIRD.aTeam}</span></div>
+      </div>
+    </div>`;
+  container.appendChild(thirdEl);
+
+  // SF → Final connectors
+  const sfMidL=lSFtop+CH/2+20+metaH;
+  line(colX[3]+CW, sfMidL, finalCol, sfMidL, 'rgba(251,146,60,0.3)', 1.5);
+
+  // ─── RIGHT SIDE (mirror of left) ───
+  // R32 right (col index 8, going right-to-left visually)
+  const rR32X=colX[8];
+  const rR32tops=lR32tops; // same vertical positions
+  RIGHT_R32.forEach((fix,i)=>placeMatch(fix,8,rR32tops[i]));
+
+  const rR16X=colX[7];
+  const rR16tops=lR16tops;
+  RIGHT_R16.forEach((fix,i)=>placeMatch(fix,7,rR16tops[i]));
+
+  RIGHT_R32.forEach((fix,i)=>{
+    if(i%2===0){
+      bracket_connector(colX[8],rR32tops[i],rR32tops[i+1],colX[7],rR16tops[i/2],'left','rgba(56,189,248,0.18)');
+    }
+  });
+
+  const rQFX=colX[6];
+  const rQFtops=lQFtops;
+  RIGHT_QF.forEach((fix,i)=>placeMatch(fix,6,rQFtops[i],true));
+
+  RIGHT_R16.forEach((fix,i)=>{
+    if(i%2===0){
+      bracket_connector(colX[7],rR16tops[i],rR16tops[i+1],colX[6],rQFtops[i/2],'left','rgba(167,139,250,0.2)');
+    }
+  });
+
+  const rSFX=colX[5];
+  placeMatch(RIGHT_SF[0],5,rSFtop,true);
+
+  bracket_connector(colX[6],rQFtops[0],rQFtops[1],colX[5],rSFtop,'left','rgba(212,168,67,0.25)');
+
+  // Right SF → Final
+  const sfMidR=rSFtop+CH/2+20+metaH;
+  line(colX[5], sfMidR, finalCol+210, sfMidR, 'rgba(251,146,60,0.3)', 1.5);
+
+  container.appendChild(svg);
+  outer.appendChild(container);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COUNTDOWN
+═══════════════════════════════════════════════════════════════ */
+const KICKOFF=new Date("2026-06-11T19:00:00Z");
+function tick(){
+  const diff=KICKOFF-new Date();
+  if(diff<=0){document.getElementById('cd-d').textContent='🟢';return}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
+buildWinners();
+buildBracket();
+tick();
+setInterval(tick,30000);
+</script>
+</body>
+</html>
