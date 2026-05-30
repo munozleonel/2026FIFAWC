@@ -561,272 +561,14 @@ const RANKINGS = {
   "Iraq":45,"Jordan":46,"Haiti":47,"Uzbekistan":48,"DR Congo":49,"Cabo Verde":50,"Curaçao":51,
 };
 
-const GROUPS_DATA = {
-  "A":[["Mexico",0,0,0,0,"active"],["South Africa",0,0,0,0,"active"],["South Korea",0,0,0,0,"active"],["Czechia",0,0,0,0,"active"]],
-  "B":[["Canada",0,0,0,0,"active"],["Bosnia & Herz.",0,0,0,0,"active"],["Qatar",0,0,0,0,"active"],["Switzerland",0,0,0,0,"active"]],
-  "C":[["Brazil",0,0,0,0,"active"],["Morocco",0,0,0,0,"active"],["Scotland",0,0,0,0,"active"],["Haiti",0,0,0,0,"active"]],
-  "D":[["USA",0,0,0,0,"active"],["Paraguay",0,0,0,0,"active"],["Australia",0,0,0,0,"active"],["Türkiye",0,0,0,0,"active"]],
-  "E":[["Germany",0,0,0,0,"active"],["Ivory Coast",0,0,0,0,"active"],["Ecuador",0,0,0,0,"active"],["Curaçao",0,0,0,0,"active"]],
-  "F":[["Netherlands",0,0,0,0,"active"],["Japan",0,0,0,0,"active"],["Sweden",0,0,0,0,"active"],["Tunisia",0,0,0,0,"active"]],
-  "G":[["Belgium",0,0,0,0,"active"],["Egypt",0,0,0,0,"active"],["Iran",0,0,0,0,"active"],["New Zealand",0,0,0,0,"active"]],
-  "H":[["Spain",0,0,0,0,"active"],["Saudi Arabia",0,0,0,0,"active"],["Uruguay",0,0,0,0,"active"],["Cabo Verde",0,0,0,0,"active"]],
-  "I":[["France",0,0,0,0,"active"],["Senegal",0,0,0,0,"active"],["Norway",0,0,0,0,"active"],["Iraq",0,0,0,0,"active"]],
-  "J":[["Argentina",0,0,0,0,"active"],["Algeria",0,0,0,0,"active"],["Austria",0,0,0,0,"active"],["Jordan",0,0,0,0,"active"]],
-  "K":[["Portugal",0,0,0,0,"active"],["Colombia",0,0,0,0,"active"],["Uzbekistan",0,0,0,0,"active"],["DR Congo",0,0,0,0,"active"]],
-  "L":[["England",0,0,0,0,"active"],["Croatia",0,0,0,0,"active"],["Ghana",0,0,0,0,"active"],["Panama",0,0,0,0,"active"]],
-};
+/* ─── Live data — populated by loadLiveData() below ─────────────────────── */
+let GROUPS_DATA  = {};   // filled from data/live_data.json
+let PLAYER_STATS = [];   // filled from data/live_data.json
+let SQUAD_DATA   = {};   // filled from data/live_data.json
+let FIXTURES_RAW = [];   // filled from data/live_data.json
+let _lastUpdated = null;
 
-// Tournament stats – pre-tournament projected / placeholder data
-// [name, team, position, gp, goals, assists, yellow, red, mins]
-const PLAYER_STATS = [
-  ["Kylian Mbappé","France","FWD",0,0,0,0,0,0],
-  ["Erling Haaland","Norway","FWD",0,0,0,0,0,0],
-  ["Harry Kane","England","FWD",0,0,0,0,0,0],
-  ["Vinícius Jr.","Brazil","FWD",0,0,0,0,0,0],
-  ["Lamine Yamal","Spain","FWD",0,0,0,0,0,0],
-  ["Lionel Messi","Argentina","FWD",0,0,0,0,0,0],
-  ["Cristiano Ronaldo","Portugal","FWD",0,0,0,0,0,0],
-  ["Florian Wirtz","Germany","MID",0,0,0,0,0,0],
-  ["Jude Bellingham","England","MID",0,0,0,0,0,0],
-  ["Rodri","Spain","MID",0,0,0,0,0,0],
-  ["Kevin De Bruyne","Belgium","MID",0,0,0,0,0,0],
-  ["Bruno Fernandes","Portugal","MID",0,0,0,0,0,0],
-  ["Federico Valverde","Uruguay","MID",0,0,0,0,0,0],
-  ["Lautaro Martínez","Argentina","FWD",0,0,0,0,0,0],
-  ["Son Heung-min","South Korea","FWD",0,0,0,0,0,0],
-  ["Christian Pulisic","USA","FWD",0,0,0,0,0,0],
-  ["Achraf Hakimi","Morocco","DEF",0,0,0,0,0,0],
-  ["Jamal Musiala","Germany","MID",0,0,0,0,0,0],
-  ["Alphonso Davies","Canada","DEF",0,0,0,0,0,0],
-  ["Sadio Mané","Senegal","FWD",0,0,0,0,0,0],
-  ["N'Golo Kanté","France","MID",0,0,0,0,0,0],
-  ["Takefusa Kubo","Japan","MID",0,0,0,0,0,0],
-  ["James Rodríguez","Colombia","MID",0,0,0,0,0,0],
-  ["Luka Modrić","Croatia","MID",0,0,0,0,0,0],
-  ["Virgil van Dijk","Netherlands","DEF",0,0,0,0,0,0],
-  ["Hakim Ziyech","Morocco","MID",0,0,0,0,0,0],
-  ["Hirving Lozano","Mexico","FWD",0,0,0,0,0,0],
-  ["Xavi Simons","Netherlands","MID",0,0,0,0,0,0],
-  ["Ousmane Dembélé","France","FWD",0,0,0,0,0,0],
-  ["Julián Álvarez","Argentina","FWD",0,0,0,0,0,0],
-  ["Rodrygo","Brazil","FWD",0,0,0,0,0,0],
-  ["Gio Reyna","USA","MID",0,0,0,0,0,0],
-  ["Mathew Ryan","Australia","GK",0,0,0,0,0,0],
-];
-
-// Full squad data per team [name, position, gp, mins, goals, assists, yellow, red]
-const SQUAD_DATA = {
-  "France":[
-    ["Kylian Mbappé","FWD",0,0,0,0,0,0],["Ousmane Dembélé","FWD",0,0,0,0,0,0],
-    ["N'Golo Kanté","MID",0,0,0,0,0,0],["Aurélien Tchouaméni","MID",0,0,0,0,0,0],
-    ["Antoine Griezmann","FWD",0,0,0,0,0,0],["Raphaël Varane","DEF",0,0,0,0,0,0],
-    ["William Saliba","DEF",0,0,0,0,0,0],["Mike Maignan","GK",0,0,0,0,0,0],
-  ],
-  "England":[
-    ["Harry Kane","FWD",0,0,0,0,0,0],["Jude Bellingham","MID",0,0,0,0,0,0],
-    ["Phil Foden","MID",0,0,0,0,0,0],["Bukayo Saka","FWD",0,0,0,0,0,0],
-    ["Declan Rice","MID",0,0,0,0,0,0],["John Stones","DEF",0,0,0,0,0,0],
-    ["Jordan Pickford","GK",0,0,0,0,0,0],["Cole Palmer","MID",0,0,0,0,0,0],
-  ],
-  "Spain":[
-    ["Lamine Yamal","FWD",0,0,0,0,0,0],["Rodri","MID",0,0,0,0,0,0],
-    ["Pedri","MID",0,0,0,0,0,0],["Álvaro Morata","FWD",0,0,0,0,0,0],
-    ["Gavi","MID",0,0,0,0,0,0],["Aymeric Laporte","DEF",0,0,0,0,0,0],
-    ["Unai Simón","GK",0,0,0,0,0,0],["Nico Williams","FWD",0,0,0,0,0,0],
-  ],
-  "Brazil":[
-    ["Vinícius Jr.","FWD",0,0,0,0,0,0],["Rodrygo","FWD",0,0,0,0,0,0],
-    ["Raphinha","FWD",0,0,0,0,0,0],["Lucas Paquetá","MID",0,0,0,0,0,0],
-    ["Casemiro","MID",0,0,0,0,0,0],["Marquinhos","DEF",0,0,0,0,0,0],
-    ["Éderson","GK",0,0,0,0,0,0],["Endrick","FWD",0,0,0,0,0,0],
-  ],
-  "Argentina":[
-    ["Lionel Messi","FWD",0,0,0,0,0,0],["Lautaro Martínez","FWD",0,0,0,0,0,0],
-    ["Julián Álvarez","FWD",0,0,0,0,0,0],["Rodrigo De Paul","MID",0,0,0,0,0,0],
-    ["Enzo Fernández","MID",0,0,0,0,0,0],["Cristian Romero","DEF",0,0,0,0,0,0],
-    ["Emiliano Martínez","GK",0,0,0,0,0,0],["Alexis Mac Allister","MID",0,0,0,0,0,0],
-  ],
-  "Germany":[
-    ["Florian Wirtz","MID",0,0,0,0,0,0],["Jamal Musiala","MID",0,0,0,0,0,0],
-    ["Kai Havertz","FWD",0,0,0,0,0,0],["Thomas Müller","FWD",0,0,0,0,0,0],
-    ["Joshua Kimmich","MID",0,0,0,0,0,0],["Antonio Rüdiger","DEF",0,0,0,0,0,0],
-    ["Manuel Neuer","GK",0,0,0,0,0,0],["Niclas Füllkrug","FWD",0,0,0,0,0,0],
-  ],
-  "Portugal":[
-    ["Cristiano Ronaldo","FWD",0,0,0,0,0,0],["Bruno Fernandes","MID",0,0,0,0,0,0],
-    ["Rafael Leão","FWD",0,0,0,0,0,0],["Bernardo Silva","MID",0,0,0,0,0,0],
-    ["Rúben Dias","DEF",0,0,0,0,0,0],["João Cancelo","DEF",0,0,0,0,0,0],
-    ["Diogo Costa","GK",0,0,0,0,0,0],["Pedro Neto","FWD",0,0,0,0,0,0],
-  ],
-  "Netherlands":[
-    ["Virgil van Dijk","DEF",0,0,0,0,0,0],["Xavi Simons","MID",0,0,0,0,0,0],
-    ["Memphis Depay","FWD",0,0,0,0,0,0],["Frenkie de Jong","MID",0,0,0,0,0,0],
-    ["Cody Gakpo","FWD",0,0,0,0,0,0],["Denzel Dumfries","DEF",0,0,0,0,0,0],
-    ["Bart Verbruggen","GK",0,0,0,0,0,0],["Tijjani Reijnders","MID",0,0,0,0,0,0],
-  ],
-  "Norway":[
-    ["Erling Haaland","FWD",0,0,0,0,0,0],["Martin Ødegaard","MID",0,0,0,0,0,0],
-    ["Alexander Sørloth","FWD",0,0,0,0,0,0],["Sander Berge","MID",0,0,0,0,0,0],
-    ["Leo Østigård","DEF",0,0,0,0,0,0],["Kristoffer Ajer","DEF",0,0,0,0,0,0],
-    ["Ørjan Nyland","GK",0,0,0,0,0,0],["Antonio Nusa","FWD",0,0,0,0,0,0],
-  ],
-  "Morocco":[
-    ["Achraf Hakimi","DEF",0,0,0,0,0,0],["Hakim Ziyech","MID",0,0,0,0,0,0],
-    ["Youssef En-Nesyri","FWD",0,0,0,0,0,0],["Azzedine Ounahi","MID",0,0,0,0,0,0],
-    ["Romain Saïss","DEF",0,0,0,0,0,0],["Sofyan Amrabat","MID",0,0,0,0,0,0],
-    ["Yassine Bounou","GK",0,0,0,0,0,0],["Sofiane Boufal","FWD",0,0,0,0,0,0],
-  ],
-  "Belgium":[
-    ["Kevin De Bruyne","MID",0,0,0,0,0,0],["Romelu Lukaku","FWD",0,0,0,0,0,0],
-    ["Yannick Carrasco","MID",0,0,0,0,0,0],["Axel Witsel","MID",0,0,0,0,0,0],
-    ["Toby Alderweireld","DEF",0,0,0,0,0,0],["Timothy Castagne","DEF",0,0,0,0,0,0],
-    ["Thibaut Courtois","GK",0,0,0,0,0,0],["Leandro Trossard","FWD",0,0,0,0,0,0],
-  ],
-  "Croatia":[
-    ["Luka Modrić","MID",0,0,0,0,0,0],["Mateo Kovačić","MID",0,0,0,0,0,0],
-    ["Ivan Perišić","FWD",0,0,0,0,0,0],["Marcelo Brozović","MID",0,0,0,0,0,0],
-    ["Joško Gvardiol","DEF",0,0,0,0,0,0],["Dejan Lovren","DEF",0,0,0,0,0,0],
-    ["Dominik Livaković","GK",0,0,0,0,0,0],["Ante Budimir","FWD",0,0,0,0,0,0],
-  ],
-  "USA":[
-    ["Christian Pulisic","FWD",0,0,0,0,0,0],["Gio Reyna","MID",0,0,0,0,0,0],
-    ["Tyler Adams","MID",0,0,0,0,0,0],["Weston McKennie","MID",0,0,0,0,0,0],
-    ["Sergiño Dest","DEF",0,0,0,0,0,0],["Matt Turner","GK",0,0,0,0,0,0],
-    ["Josh Sargent","FWD",0,0,0,0,0,0],["Yunus Musah","MID",0,0,0,0,0,0],
-  ],
-  "Mexico":[
-    ["Hirving Lozano","FWD",0,0,0,0,0,0],["Raúl Jiménez","FWD",0,0,0,0,0,0],
-    ["Edson Álvarez","MID",0,0,0,0,0,0],["Andrés Guardado","MID",0,0,0,0,0,0],
-    ["César Montes","DEF",0,0,0,0,0,0],["Guillermo Ochoa","GK",0,0,0,0,0,0],
-    ["Henry Martín","FWD",0,0,0,0,0,0],["Chucky Lozano","FWD",0,0,0,0,0,0],
-  ],
-  "Canada":[
-    ["Alphonso Davies","DEF",0,0,0,0,0,0],["Jonathan David","FWD",0,0,0,0,0,0],
-    ["Tajon Buchanan","FWD",0,0,0,0,0,0],["Atiba Hutchinson","MID",0,0,0,0,0,0],
-    ["Stephen Eustáquio","MID",0,0,0,0,0,0],["Milan Borjan","GK",0,0,0,0,0,0],
-    ["Cyle Larin","FWD",0,0,0,0,0,0],["Mark-Anthony Kaye","MID",0,0,0,0,0,0],
-  ],
-  "Japan":[
-    ["Takefusa Kubo","MID",0,0,0,0,0,0],["Daichi Kamada","MID",0,0,0,0,0,0],
-    ["Ritsu Doan","MID",0,0,0,0,0,0],["Kaoru Mitoma","FWD",0,0,0,0,0,0],
-    ["Takehiro Tomiyasu","DEF",0,0,0,0,0,0],["Shuichi Gonda","GK",0,0,0,0,0,0],
-    ["Ao Tanaka","MID",0,0,0,0,0,0],["Ayase Ueda","FWD",0,0,0,0,0,0],
-  ],
-  "Australia":[
-    ["Mathew Ryan","GK",0,0,0,0,0,0],["Mitchell Duke","FWD",0,0,0,0,0,0],
-    ["Aaron Mooy","MID",0,0,0,0,0,0],["Ajdin Hrustic","MID",0,0,0,0,0,0],
-    ["Miloš Degenek","DEF",0,0,0,0,0,0],["Mat Leckie","FWD",0,0,0,0,0,0],
-    ["Martin Boyle","FWD",0,0,0,0,0,0],["Riley McGree","MID",0,0,0,0,0,0],
-  ],
-  "South Korea":[
-    ["Son Heung-min","FWD",0,0,0,0,0,0],["Lee Kang-in","MID",0,0,0,0,0,0],
-    ["Hwang Hee-chan","FWD",0,0,0,0,0,0],["Kim Min-jae","DEF",0,0,0,0,0,0],
-    ["Jung Woo-young","MID",0,0,0,0,0,0],["Kim Seung-gyu","GK",0,0,0,0,0,0],
-    ["Cho Gue-sung","FWD",0,0,0,0,0,0],["Lee Jae-sung","MID",0,0,0,0,0,0],
-  ],
-  "Uruguay":[
-    ["Federico Valverde","MID",0,0,0,0,0,0],["Luis Suárez","FWD",0,0,0,0,0,0],
-    ["Darwin Núñez","FWD",0,0,0,0,0,0],["Rodrigo Bentancur","MID",0,0,0,0,0,0],
-    ["Ronald Araújo","DEF",0,0,0,0,0,0],["José María Giménez","DEF",0,0,0,0,0,0],
-    ["Sergio Rochet","GK",0,0,0,0,0,0],["Facundo Pellistri","FWD",0,0,0,0,0,0],
-  ],
-  "Colombia":[
-    ["James Rodríguez","MID",0,0,0,0,0,0],["Luis Díaz","FWD",0,0,0,0,0,0],
-    ["Falcao","FWD",0,0,0,0,0,0],["Juan Cuadrado","MID",0,0,0,0,0,0],
-    ["Davinson Sánchez","DEF",0,0,0,0,0,0],["David Ospina","GK",0,0,0,0,0,0],
-    ["Jhon Durán","FWD",0,0,0,0,0,0],["Mateus Uribe","MID",0,0,0,0,0,0],
-  ],
-  "Senegal":[
-    ["Sadio Mané","FWD",0,0,0,0,0,0],["Idrissa Gueye","MID",0,0,0,0,0,0],
-    ["Kalidou Koulibaly","DEF",0,0,0,0,0,0],["Cheikhou Kouyaté","MID",0,0,0,0,0,0],
-    ["Édouard Mendy","GK",0,0,0,0,0,0],["Habib Diallo","FWD",0,0,0,0,0,0],
-    ["Pape Gueye","MID",0,0,0,0,0,0],["Ismaila Sarr","FWD",0,0,0,0,0,0],
-  ],
-};
-// Add a default squad template for all other teams not explicitly listed
-TEAMS.forEach(([,country])=>{
-  if(!SQUAD_DATA[country]){
-    SQUAD_DATA[country]=[
-      ["Player 1 (TBC)","FWD",0,0,0,0,0,0],["Player 2 (TBC)","MID",0,0,0,0,0,0],
-      ["Player 3 (TBC)","DEF",0,0,0,0,0,0],["Player 4 (TBC)","GK",0,0,0,0,0,0],
-    ];
-  }
-});
-
-const FIXTURES_RAW = [
-  ["A","2026-06-11T19:00:00Z","Mexico","South Africa","Estadio Azteca","Mexico City","-200","+350","+600"],
-  ["A","2026-06-12T02:00:00Z","South Korea","Czechia","Estadio Akron","Zapopan","-130","+260","+380"],
-  ["A","2026-06-18T16:00:00Z","Czechia","South Africa","Mercedes-Benz Stadium","Atlanta","-140","+270","+400"],
-  ["A","2026-06-19T01:00:00Z","Mexico","South Korea","Estadio Akron","Zapopan","-150","+280","+420"],
-  ["A","2026-06-25T01:00:00Z","Czechia","Mexico","Estadio Azteca","Mexico City","+360","+260","-120"],
-  ["A","2026-06-25T01:00:00Z","South Africa","South Korea","Estadio BBVA","Guadalupe","+440","+280","-140"],
-  ["B","2026-06-12T19:00:00Z","Canada","Bosnia & Herz.","BMO Field","Toronto","-180","+330","+550"],
-  ["B","2026-06-13T19:00:00Z","Qatar","Switzerland","Levi's Stadium","Santa Clara","+560","+340","-190"],
-  ["B","2026-06-18T19:00:00Z","Switzerland","Bosnia & Herz.","SoFi Stadium","Inglewood","-200","+340","+580"],
-  ["B","2026-06-18T22:00:00Z","Canada","Qatar","BC Place","Vancouver","-220","+360","+620"],
-  ["B","2026-06-24T19:00:00Z","Switzerland","Canada","BC Place","Vancouver","-110","+300","-130"],
-  ["B","2026-06-24T19:00:00Z","Bosnia & Herz.","Qatar","Lumen Field","Seattle","-160","+300","+450"],
-  ["C","2026-06-13T22:00:00Z","Brazil","Morocco","MetLife Stadium","East Rutherford","-220","+360","+620"],
-  ["C","2026-06-14T01:00:00Z","Haiti","Scotland","Gillette Stadium","Foxborough","+550","+330","-180"],
-  ["C","2026-06-19T22:00:00Z","Scotland","Morocco","Gillette Stadium","Foxborough","+320","+270","-110"],
-  ["C","2026-06-20T01:00:00Z","Brazil","Haiti","Lincoln Financial Field","Philadelphia","-600","+500","+1800"],
-  ["C","2026-06-24T22:00:00Z","Scotland","Brazil","Hard Rock Stadium","Miami Gardens","+800","+380","-280"],
-  ["C","2026-06-24T22:00:00Z","Morocco","Haiti","Mercedes-Benz Stadium","Atlanta","-350","+420","+1100"],
-  ["D","2026-06-13T01:00:00Z","USA","Paraguay","SoFi Stadium","Inglewood","-165","+310","+490"],
-  ["D","2026-06-13T04:00:00Z","Australia","Türkiye","BC Place","Vancouver","+400","+270","-140"],
-  ["D","2026-06-19T04:00:00Z","Türkiye","Paraguay","Levi's Stadium","Santa Clara","-160","+290","+460"],
-  ["D","2026-06-19T19:00:00Z","USA","Australia","Lumen Field","Seattle","-200","+340","+560"],
-  ["D","2026-06-26T02:00:00Z","Türkiye","USA","SoFi Stadium","Inglewood","+390","+270","-140"],
-  ["D","2026-06-26T02:00:00Z","Paraguay","Australia","Levi's Stadium","Santa Clara","-140","+270","+390"],
-  ["E","2026-06-14T17:00:00Z","Germany","Curaçao","NRG Stadium","Houston","-700","+600","+2200"],
-  ["E","2026-06-14T23:00:00Z","Ivory Coast","Ecuador","Lincoln Financial Field","Philadelphia","+380","+260","-130"],
-  ["E","2026-06-20T20:00:00Z","Germany","Ivory Coast","BMO Field","Toronto","-220","+360","+640"],
-  ["E","2026-06-21T00:00:00Z","Ecuador","Curaçao","Arrowhead Stadium","Kansas City","-500","+480","+1600"],
-  ["E","2026-06-25T20:00:00Z","Ecuador","Germany","MetLife Stadium","East Rutherford","+560","+340","-200"],
-  ["E","2026-06-25T20:00:00Z","Curaçao","Ivory Coast","Lincoln Financial Field","Philadelphia","+850","+380","-280"],
-  ["F","2026-06-14T20:00:00Z","Netherlands","Japan","AT&T Stadium","Arlington","-180","+320","+520"],
-  ["F","2026-06-15T02:00:00Z","Sweden","Tunisia","Estadio BBVA","Guadalupe","-200","+340","+580"],
-  ["F","2026-06-20T17:00:00Z","Netherlands","Sweden","NRG Stadium","Houston","-130","+260","+380"],
-  ["F","2026-06-20T04:00:00Z","Tunisia","Japan","Estadio BBVA","Guadalupe","+530","+330","-180"],
-  ["F","2026-06-25T23:00:00Z","Tunisia","Netherlands","AT&T Stadium","Arlington","+960","+420","-320"],
-  ["F","2026-06-25T23:00:00Z","Japan","Sweden","Arrowhead Stadium","Kansas City","-140","+270","+400"],
-  ["G","2026-06-15T19:00:00Z","Belgium","Egypt","Lumen Field","Seattle","-240","+360","+680"],
-  ["G","2026-06-16T01:00:00Z","Iran","New Zealand","SoFi Stadium","Inglewood","-200","+340","+580"],
-  ["G","2026-06-21T19:00:00Z","Belgium","Iran","SoFi Stadium","Inglewood","-220","+360","+640"],
-  ["G","2026-06-22T01:00:00Z","New Zealand","Egypt","BC Place","Vancouver","+460","+290","-160"],
-  ["G","2026-06-27T03:00:00Z","New Zealand","Belgium","BC Place","Vancouver","+1200","+440","-380"],
-  ["G","2026-06-27T03:00:00Z","Egypt","Iran","Lumen Field","Seattle","+430","+280","-150"],
-  ["H","2026-06-15T16:00:00Z","Spain","Cabo Verde","Mercedes-Benz Stadium","Atlanta","-800","+600","+2500"],
-  ["H","2026-06-15T22:00:00Z","Saudi Arabia","Uruguay","Hard Rock Stadium","Miami Gardens","+460","+290","-160"],
-  ["H","2026-06-21T16:00:00Z","Spain","Saudi Arabia","Mercedes-Benz Stadium","Atlanta","-400","+480","+1200"],
-  ["H","2026-06-21T22:00:00Z","Uruguay","Cabo Verde","Hard Rock Stadium","Miami Gardens","-500","+480","+1600"],
-  ["H","2026-06-27T00:00:00Z","Uruguay","Spain","NRG Stadium","Houston","+560","+340","-200"],
-  ["H","2026-06-27T00:00:00Z","Cabo Verde","Saudi Arabia","Estadio Akron","Zapopan","+580","+340","-200"],
-  ["I","2026-06-16T19:00:00Z","France","Senegal","MetLife Stadium","East Rutherford","-280","+380","+850"],
-  ["I","2026-06-16T22:00:00Z","Iraq","Norway","Gillette Stadium","Foxborough","+750","+370","-250"],
-  ["I","2026-06-22T21:00:00Z","France","Iraq","Lincoln Financial Field","Philadelphia","-600","+500","+1900"],
-  ["I","2026-06-23T00:00:00Z","Norway","Senegal","MetLife Stadium","East Rutherford","-180","+330","+530"],
-  ["I","2026-06-26T19:00:00Z","Norway","France","Gillette Stadium","Foxborough","+560","+340","-200"],
-  ["I","2026-06-26T19:00:00Z","Senegal","Iraq","BMO Field","Toronto","-200","+340","+580"],
-  ["J","2026-06-17T01:00:00Z","Argentina","Algeria","Arrowhead Stadium","Kansas City","-320","+420","+960"],
-  ["J","2026-06-17T04:00:00Z","Austria","Jordan","Levi's Stadium","Santa Clara","-220","+360","+640"],
-  ["J","2026-06-22T17:00:00Z","Argentina","Austria","AT&T Stadium","Arlington","-260","+380","+780"],
-  ["J","2026-06-23T03:00:00Z","Jordan","Algeria","Levi's Stadium","Santa Clara","+430","+280","-150"],
-  ["J","2026-06-28T02:00:00Z","Jordan","Argentina","AT&T Stadium","Arlington","+1600","+480","-500"],
-  ["J","2026-06-28T02:00:00Z","Algeria","Austria","Arrowhead Stadium","Kansas City","+400","+270","-140"],
-  ["K","2026-06-17T17:00:00Z","Portugal","DR Congo","NRG Stadium","Houston","-500","+480","+1600"],
-  ["K","2026-06-18T02:00:00Z","Uzbekistan","Colombia","Estadio Azteca","Mexico City","+850","+380","-280"],
-  ["K","2026-06-23T17:00:00Z","Portugal","Uzbekistan","NRG Stadium","Houston","-600","+500","+1900"],
-  ["K","2026-06-24T02:00:00Z","Colombia","DR Congo","Estadio Akron","Zapopan","-400","+460","+1200"],
-  ["K","2026-06-27T23:30:00Z","Colombia","Portugal","Hard Rock Stadium","Miami Gardens","+460","+290","-160"],
-  ["K","2026-06-27T23:30:00Z","DR Congo","Uzbekistan","Mercedes-Benz Stadium","Atlanta","-180","+330","+530"],
-  ["L","2026-06-17T20:00:00Z","England","Croatia","AT&T Stadium","Arlington","-220","+360","+640"],
-  ["L","2026-06-17T23:00:00Z","Ghana","Panama","BMO Field","Toronto","-180","+330","+530"],
-  ["L","2026-06-23T20:00:00Z","England","Ghana","Gillette Stadium","Foxborough","-280","+380","+850"],
-  ["L","2026-06-23T23:00:00Z","Panama","Croatia","BMO Field","Toronto","+580","+340","-200"],
-  ["L","2026-06-27T21:00:00Z","Panama","England","MetLife Stadium","East Rutherford","+1200","+460","-400"],
-  ["L","2026-06-27T21:00:00Z","Croatia","Ghana","Lincoln Financial Field","Philadelphia","-200","+340","+580"],
-];
+/* PLAYER_STATS, SQUAD_DATA and FIXTURES_RAW are loaded dynamically — see loadLiveData() */
 
 const TIMEZONES = [
   {label:"Pacific/Auckland (NZST UTC+12)",value:"Pacific/Auckland"},
@@ -1291,19 +1033,156 @@ function switchMobileView(n, btn){
   }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   LIVE DATA LOADER — reads data/live_data.json
+   Written by GitHub Actions every 3 hours (or manually).
+   Falls back to empty defaults if the file is unavailable.
+═══════════════════════════════════════════════════════════ */
+
+// Default empty groups (shown while loading / if fetch fails)
+const DEFAULT_GROUPS = {
+  "A":[["Mexico",0,0,0,0,0,"active"],["South Africa",0,0,0,0,0,"active"],["South Korea",0,0,0,0,0,"active"],["Czechia",0,0,0,0,0,"active"]],
+  "B":[["Canada",0,0,0,0,0,"active"],["Bosnia & Herz.",0,0,0,0,0,"active"],["Qatar",0,0,0,0,0,"active"],["Switzerland",0,0,0,0,0,"active"]],
+  "C":[["Brazil",0,0,0,0,0,"active"],["Morocco",0,0,0,0,0,"active"],["Scotland",0,0,0,0,0,"active"],["Haiti",0,0,0,0,0,"active"]],
+  "D":[["USA",0,0,0,0,0,"active"],["Paraguay",0,0,0,0,0,"active"],["Australia",0,0,0,0,0,"active"],["Türkiye",0,0,0,0,0,"active"]],
+  "E":[["Germany",0,0,0,0,0,"active"],["Ivory Coast",0,0,0,0,0,"active"],["Ecuador",0,0,0,0,0,"active"],["Curaçao",0,0,0,0,0,"active"]],
+  "F":[["Netherlands",0,0,0,0,0,"active"],["Japan",0,0,0,0,0,"active"],["Sweden",0,0,0,0,0,"active"],["Tunisia",0,0,0,0,0,"active"]],
+  "G":[["Belgium",0,0,0,0,0,"active"],["Egypt",0,0,0,0,0,"active"],["Iran",0,0,0,0,0,"active"],["New Zealand",0,0,0,0,0,"active"]],
+  "H":[["Spain",0,0,0,0,0,"active"],["Saudi Arabia",0,0,0,0,0,"active"],["Uruguay",0,0,0,0,0,"active"],["Cabo Verde",0,0,0,0,0,"active"]],
+  "I":[["France",0,0,0,0,0,"active"],["Senegal",0,0,0,0,0,"active"],["Norway",0,0,0,0,0,"active"],["Iraq",0,0,0,0,0,"active"]],
+  "J":[["Argentina",0,0,0,0,0,"active"],["Algeria",0,0,0,0,0,"active"],["Austria",0,0,0,0,0,"active"],["Jordan",0,0,0,0,0,"active"]],
+  "K":[["Portugal",0,0,0,0,0,"active"],["Colombia",0,0,0,0,0,"active"],["Uzbekistan",0,0,0,0,0,"active"],["DR Congo",0,0,0,0,0,"active"]],
+  "L":[["England",0,0,0,0,0,"active"],["Croatia",0,0,0,0,0,"active"],["Ghana",0,0,0,0,0,"active"],["Panama",0,0,0,0,0,"active"]],
+};
+
+function showDataStatus(msg, isError=false){
+  let bar = document.getElementById('data-status-bar');
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id = 'data-status-bar';
+    bar.style.cssText = [
+      'position:fixed','bottom:10px','right:14px','z-index:9999',
+      'font-family:Oswald,sans-serif','font-size:10px','letter-spacing:1px',
+      'padding:5px 12px','border-radius:5px','transition:opacity 1s',
+      'pointer-events:none'
+    ].join(';');
+    document.body.appendChild(bar);
+  }
+  bar.style.opacity = '1';
+  bar.style.background  = isError ? 'rgba(200,16,46,0.85)' : 'rgba(0,132,61,0.85)';
+  bar.style.border      = isError ? '1px solid #C8102E'     : '1px solid #00843D';
+  bar.style.color       = '#fff';
+  bar.textContent       = msg;
+  if(!isError) setTimeout(()=>{ bar.style.opacity='0'; }, 4000);
+}
+
+function updateLastUpdatedBadge(iso){
+  const el = document.getElementById('last-updated-badge');
+  if(!el || !iso) return;
+  try {
+    const d = new Date(iso);
+    el.textContent = '🔄 Data: ' + d.toLocaleString('en-AU',{
+      timeZone: selectedTZ || 'UTC',
+      day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit'
+    });
+    el.title = 'Last fetched from live source: ' + d.toISOString();
+  } catch(e){ el.textContent = '🔄 Data loaded'; }
+}
+
+async function loadLiveData(){
+  // Inject "last updated" badge into header if not already there
+  if(!document.getElementById('last-updated-badge')){
+    const badge = document.createElement('div');
+    badge.id = 'last-updated-badge';
+    badge.style.cssText = [
+      'font-family:Oswald,sans-serif','font-size:9px','letter-spacing:1px',
+      'color:var(--fg-muted)','cursor:default','white-space:nowrap',
+      'padding:2px 8px','border-radius:4px',
+      'border:1px solid rgba(255,255,255,0.08)',
+      'background:rgba(0,0,0,0.2)'
+    ].join(';');
+    badge.textContent = '⏳ Loading data…';
+    const hdr = document.getElementById('app-header');
+    if(hdr) hdr.appendChild(badge);
+  }
+
+  // Use a cache-busting query param so the browser always gets the latest JSON
+  const url = `data/live_data.json?v=${Date.now()}`;
+
+  try {
+    const res = await fetch(url);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const liveData = await res.json();
+
+    // ── Apply groups ──────────────────────────────────────────
+    if(liveData.groups && Object.keys(liveData.groups).length > 0){
+      GROUPS_DATA = liveData.groups;
+    } else {
+      GROUPS_DATA = DEFAULT_GROUPS;
+    }
+
+    // ── Apply fixtures (add score cols if missing) ────────────
+    if(liveData.fixtures && liveData.fixtures.length > 0){
+      FIXTURES_RAW = liveData.fixtures.map(row => {
+        // Ensure row has 11 columns [grp,iso,home,away,venue,city,hO,dO,aO,hSc,aSc]
+        while(row.length < 11) row.push(null);
+        return row;
+      });
+    }
+
+    // ── Apply player stats ────────────────────────────────────
+    if(liveData.player_stats && liveData.player_stats.length > 0){
+      PLAYER_STATS = liveData.player_stats;
+    }
+
+    // ── Apply squad stats ─────────────────────────────────────
+    if(liveData.squad_stats && Object.keys(liveData.squad_stats).length > 0){
+      SQUAD_DATA = liveData.squad_stats;
+    }
+
+    // ── Meta ──────────────────────────────────────────────────
+    _lastUpdated = liveData._meta?.last_updated || null;
+    updateLastUpdatedBadge(_lastUpdated);
+
+    const updateNum = liveData._meta?.update_count ?? '?';
+    showDataStatus(`✓ Live data loaded (update #${updateNum})`);
+
+  } catch(err) {
+    console.warn('loadLiveData: could not fetch live_data.json —', err.message);
+    // Fall back to empty defaults so the page still renders
+    GROUPS_DATA  = DEFAULT_GROUPS;
+    FIXTURES_RAW = [];
+    PLAYER_STATS = [];
+    SQUAD_DATA   = {};
+    showDataStatus('⚠ Using static data (live fetch failed)', true);
+
+    const badge = document.getElementById('last-updated-badge');
+    if(badge) badge.textContent = '📦 Static data';
+  }
+
+  // ── Render everything once data is ready ──────────────────
+  buildGroupTables();
+  buildFixtures();
+  buildTopPerformers();
+  buildFanTeamPlayers();
+  initSubsecHeights();
+  updateFixFilterCount();
+  updateGtFilterCount();
+}
+
+/* ─── Boot ─────────────────────────────────────────────────── */
 buildTZSelector();
 buildTeamList();
-buildGroupTables();
-buildFixtures();
-buildTopPerformers();
-buildFanTeamPlayers();
-initSubsecHeights();
 updateClock();
 updateCountdown();
-updateFixFilterCount();
-updateGtFilterCount();
-setInterval(updateClock,1000);
+setInterval(updateClock,    1000);
 setInterval(updateCountdown,1000);
+
+// Load live data, then render data-dependent sections
+loadLiveData();
+
+// Auto-refresh every 3 hours (matches Actions schedule)
+setInterval(loadLiveData, 3 * 60 * 60 * 1000);
 </script>
 </body>
 </html>
