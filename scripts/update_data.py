@@ -42,7 +42,7 @@ API_KEY        = os.environ.get("API_FOOTBALL_KEY", "")
 TOURNAMENT_ID  = os.environ.get("TOURNAMENT_ID", "1")   # FIFA World Cup
 SEASON         = os.environ.get("SEASON", "2026")
 DATA_FILE      = Path(__file__).parent.parent / "data" / "live_data.json"
-BASE_URL       = "https://api-football-v1.p.rapidapi.com/v3"
+BASE_URL       = "https://v3.football.api-sports.io"
 HEADERS        = {
     "x-apisports-key":  API_KEY,
     "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
