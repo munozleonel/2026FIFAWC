@@ -1,8 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-05T04:33:54Z",
+    "last_updated": "2026-06-05T04:45:45Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 46
+    "update_count": 47,
+    "odds_last_updated": "2026-06-05T04:45:46Z"
   },
   "groups": {
     "A": [
