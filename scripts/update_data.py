@@ -230,6 +230,98 @@ def fetch_fixtures(existing: dict) -> dict:
     return existing
 
 
+# ─── Fetch odds ──────────────────────────────────────────────────────────────
+
+def fetch_odds(existing: dict) -> dict:
+    """
+    Fetch pre-match 1X2 odds from API-Football for upcoming fixtures and update
+    indices 6 (homeOdds), 7 (drawOdds), 8 (awayOdds) in existing['fixtures'].
+
+    Odds are stored as American-format strings (e.g. "-150", "+320").
+    Only unplayed fixtures (score is null) are updated — completed matches keep
+    their final odds for historical reference.
+
+    API-Football returns decimal odds; we convert to American format:
+      decimal ≥ 2.0  →  positive American:  round((decimal - 1) * 100)
+      decimal < 2.0  →  negative American:  round(-100 / (decimal - 1))
+    """
+    log.info("Fetching odds for tournament %s season %s…", TOURNAMENT_ID, SEASON)
+    data = api_get("odds", {
+        "league":  TOURNAMENT_ID,
+        "season":  SEASON,
+        "bet":     1,           # bet ID 1 = Match Winner (1X2)
+        "bookmaker": 6,         # bookmaker ID 6 = Bet365 (widely available)
+    })
+    if not data:
+        log.warning("No odds data returned — keeping existing odds.")
+        return existing
+
+    def decimal_to_american(dec: float) -> str:
+        """Convert decimal odds to American odds string."""
+        try:
+            dec = float(dec)
+            if dec <= 1.0:
+                return "N/A"
+            if dec >= 2.0:
+                return f"+{round((dec - 1) * 100)}"
+            else:
+                return str(round(-100 / (dec - 1)))
+        except (ValueError, ZeroDivisionError):
+            return "N/A"
+
+    # Build lookup: (home_norm, away_norm) → (homeOdds, drawOdds, awayOdds)
+    odds_lookup: dict[tuple, tuple] = {}
+    for fix_entry in data.get("response", []):
+        fixture_info = fix_entry.get("fixture", {})
+        teams        = fix_entry.get("teams", {})
+        bookmakers   = fix_entry.get("bookmakers", [])
+
+        home = normalise_name(teams.get("home", {}).get("name", ""))
+        away = normalise_name(teams.get("away", {}).get("name", ""))
+
+        # Walk bookmakers → bets → values to find 1X2
+        for bm in bookmakers:
+            for bet in bm.get("bets", []):
+                if bet.get("name", "").lower() not in ("match winner", "1x2"):
+                    continue
+                values = {v["value"]: v["odd"] for v in bet.get("values", [])}
+                home_dec = values.get("Home")
+                draw_dec = values.get("Draw")
+                away_dec = values.get("Away")
+                if home_dec and draw_dec and away_dec:
+                    odds_lookup[(home, away)] = (
+                        decimal_to_american(home_dec),
+                        decimal_to_american(draw_dec),
+                        decimal_to_american(away_dec),
+                    )
+                    break  # found what we need for this fixture
+            else:
+                continue
+            break
+
+    updated = 0
+    for row in existing.get("fixtures", []):
+        # Only update odds for unplayed matches (scores are null)
+        if len(row) >= 11 and row[9] is not None:
+            continue  # match already played — leave odds as-is
+
+        home = row[2]
+        away = row[3]
+        key  = (home, away)
+        if key in odds_lookup:
+            h_odds, d_odds, a_odds = odds_lookup[key]
+            if len(row) < 11:
+                while len(row) < 11:
+                    row.append(None)
+            row[6] = h_odds
+            row[7] = d_odds
+            row[8] = a_odds
+            updated += 1
+
+    log.info("Updated odds for %d fixtures.", updated)
+    return existing
+
+
 # ─── Fetch player stats ───────────────────────────────────────────────────────
 
 def fetch_player_stats(existing: dict) -> dict:
@@ -347,6 +439,7 @@ def main():
     # Run each fetcher
     data = fetch_standings(data)
     data = fetch_fixtures(data)
+    data = fetch_odds(data)
     data = fetch_player_stats(data)
 
     save(data)
