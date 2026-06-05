@@ -3,16 +3,19 @@
 FIFA World Cup 2026 — Live Data Updater
 =======================================
 Fetches live match results, group standings and player stats from
-API-Football (rapidapi.com) and writes data/live_data.json.
+API-Football (rapidapi.com), and pre-match odds from The Odds API
+(the-odds-api.com), then writes data/live_data.json.
 
 Environment variables required (set as GitHub Secrets):
   API_FOOTBALL_KEY   — your RapidAPI key for api-football.com
   TOURNAMENT_ID      — API-Football tournament/league ID for WC 2026
                        (use 1 for FIFA World Cup; confirm once live)
+  ODDS_API_KEY       — your API key from the-odds-api.com (free tier:
+                       500 requests/month; runs every 3 hrs = ~240/month)
 
 Run locally:
   pip install requests
-  API_FOOTBALL_KEY=xxx TOURNAMENT_ID=1 python scripts/update_data.py
+  API_FOOTBALL_KEY=xxx TOURNAMENT_ID=1 ODDS_API_KEY=xxx python scripts/update_data.py
 
 GitHub Actions runs this automatically (see .github/workflows/update.yml).
 """
@@ -41,8 +44,10 @@ log = logging.getLogger(__name__)
 API_KEY        = os.environ.get("API_FOOTBALL_KEY", "")
 TOURNAMENT_ID  = os.environ.get("TOURNAMENT_ID", "1")   # FIFA World Cup
 SEASON         = os.environ.get("SEASON", "2026")
+ODDS_API_KEY   = os.environ.get("ODDS_API_KEY", "")
 DATA_FILE      = Path(__file__).parent.parent / "data" / "live_data.json"
 BASE_URL       = "https://v3.football.api-sports.io"
+ODDS_API_URL   = "https://api.the-odds-api.com/v4/sports/soccer_fifa_world_cup/odds"
 HEADERS        = {
     "x-apisports-key":  API_KEY,
     "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
@@ -230,95 +235,147 @@ def fetch_fixtures(existing: dict) -> dict:
     return existing
 
 
-# ─── Fetch odds ──────────────────────────────────────────────────────────────
+# ─── Fetch odds (The Odds API) ────────────────────────────────────────────────
+
+def decimal_to_american(dec: float) -> str:
+    """Convert decimal odds to American odds string (e.g. 2.70 → '+170')."""
+    try:
+        dec = float(dec)
+        if dec <= 1.0:
+            return "N/A"
+        if dec >= 2.0:
+            return f"+{round((dec - 1) * 100)}"
+        else:
+            return str(round(-100 / (dec - 1)))
+    except (ValueError, ZeroDivisionError):
+        return "N/A"
+
 
 def fetch_odds(existing: dict) -> dict:
     """
-    Fetch pre-match 1X2 odds from API-Football for upcoming fixtures and update
-    indices 6 (homeOdds), 7 (drawOdds), 8 (awayOdds) in existing['fixtures'].
+    Fetch pre-match 1X2 odds from The Odds API (the-odds-api.com) for all
+    upcoming World Cup fixtures and update indices 6/7/8 in each fixture row:
+      row[6] = homeOdds  (American format string, e.g. "-150")
+      row[7] = drawOdds
+      row[8] = awayOdds
 
-    Odds are stored as American-format strings (e.g. "-150", "+320").
-    Only unplayed fixtures (score is null) are updated — completed matches keep
-    their final odds for historical reference.
+    Uses the h2h (head-to-head / match winner) market.
+    Averages odds across all available bookmakers for a consensus line.
+    Only unplayed fixtures are updated; completed matches keep final odds.
 
-    API-Football returns decimal odds; we convert to American format:
-      decimal ≥ 2.0  →  positive American:  round((decimal - 1) * 100)
-      decimal < 2.0  →  negative American:  round(-100 / (decimal - 1))
+    Requires env var: ODDS_API_KEY
+    Free tier: 500 requests/month. Running every 3 hrs uses ~240/month.
     """
-    log.info("Fetching odds for tournament %s season %s…", TOURNAMENT_ID, SEASON)
-    data = api_get("odds", {
-        "league":  TOURNAMENT_ID,
-        "season":  SEASON,
-        "bet":     1,           # bet ID 1 = Match Winner (1X2)
-        "bookmaker": 6,         # bookmaker ID 6 = Bet365 (widely available)
-    })
-    if not data:
-        log.warning("No odds data returned — keeping existing odds.")
+    if not ODDS_API_KEY:
+        log.warning("ODDS_API_KEY not set — skipping odds update.")
         return existing
 
-    def decimal_to_american(dec: float) -> str:
-        """Convert decimal odds to American odds string."""
-        try:
-            dec = float(dec)
-            if dec <= 1.0:
-                return "N/A"
-            if dec >= 2.0:
-                return f"+{round((dec - 1) * 100)}"
-            else:
-                return str(round(-100 / (dec - 1)))
-        except (ValueError, ZeroDivisionError):
-            return "N/A"
+    log.info("Fetching odds from The Odds API…")
+    try:
+        resp = requests.get(
+            ODDS_API_URL,
+            params={
+                "apiKey":     ODDS_API_KEY,
+                "regions":    "us",          # American odds format
+                "markets":    "h2h",         # match winner (home / draw / away)
+                "oddsFormat": "decimal",     # we convert to American ourselves
+                "dateFormat": "iso",
+            },
+            timeout=20,
+        )
+        resp.raise_for_status()
 
-    # Build lookup: (home_norm, away_norm) → (homeOdds, drawOdds, awayOdds)
+        # Log remaining quota so we can monitor free-tier usage
+        remaining = resp.headers.get("x-requests-remaining", "?")
+        used      = resp.headers.get("x-requests-used", "?")
+        log.info("Odds API quota — used: %s, remaining: %s", used, remaining)
+
+        games = resp.json()
+    except requests.RequestException as e:
+        log.error("Odds API request failed: %s", e)
+        return existing
+
+    if not isinstance(games, list) or not games:
+        log.warning("Odds API returned no games — keeping existing odds.")
+        return existing
+
+    # ── Build consensus odds lookup ──────────────────────────────────────────
+    # The Odds API returns one entry per game with a list of bookmakers.
+    # We average decimal odds across bookmakers then convert to American,
+    # giving a consensus line rather than depending on one bookmaker's prices.
+    #
+    # lookup key: (home_norm, away_norm) → (homeOdds, drawOdds, awayOdds)
     odds_lookup: dict[tuple, tuple] = {}
-    for fix_entry in data.get("response", []):
-        fixture_info = fix_entry.get("fixture", {})
-        teams        = fix_entry.get("teams", {})
-        bookmakers   = fix_entry.get("bookmakers", [])
 
-        home = normalise_name(teams.get("home", {}).get("name", ""))
-        away = normalise_name(teams.get("away", {}).get("name", ""))
+    for game in games:
+        home_raw = game.get("home_team", "")
+        away_raw = game.get("away_team", "")
+        home     = normalise_name(home_raw)
+        away     = normalise_name(away_raw)
 
-        # Walk bookmakers → bets → values to find 1X2
-        for bm in bookmakers:
-            for bet in bm.get("bets", []):
-                if bet.get("name", "").lower() not in ("match winner", "1x2"):
+        # Collect all h2h prices across bookmakers
+        home_prices, draw_prices, away_prices = [], [], []
+
+        for bm in game.get("bookmakers", []):
+            for market in bm.get("markets", []):
+                if market.get("key") != "h2h":
                     continue
-                values = {v["value"]: v["odd"] for v in bet.get("values", [])}
-                home_dec = values.get("Home")
-                draw_dec = values.get("Draw")
-                away_dec = values.get("Away")
-                if home_dec and draw_dec and away_dec:
-                    odds_lookup[(home, away)] = (
-                        decimal_to_american(home_dec),
-                        decimal_to_american(draw_dec),
-                        decimal_to_american(away_dec),
-                    )
-                    break  # found what we need for this fixture
-            else:
-                continue
-            break
+                outcomes = {o["name"]: o["price"] for o in market.get("outcomes", [])}
+                h = outcomes.get(home_raw) or outcomes.get(home)
+                d = outcomes.get("Draw")
+                a = outcomes.get(away_raw) or outcomes.get(away)
+                if h and d and a:
+                    home_prices.append(float(h))
+                    draw_prices.append(float(d))
+                    away_prices.append(float(a))
 
+        if home_prices and draw_prices and away_prices:
+            avg_h = sum(home_prices) / len(home_prices)
+            avg_d = sum(draw_prices) / len(draw_prices)
+            avg_a = sum(away_prices) / len(away_prices)
+            odds_lookup[(home, away)] = (
+                decimal_to_american(avg_h),
+                decimal_to_american(avg_d),
+                decimal_to_american(avg_a),
+            )
+            log.debug("Odds for %s vs %s: %s / %s / %s (avg of %d bookmakers)",
+                      home, away,
+                      decimal_to_american(avg_h),
+                      decimal_to_american(avg_d),
+                      decimal_to_american(avg_a),
+                      len(home_prices))
+
+    log.info("Odds API returned prices for %d fixtures.", len(odds_lookup))
+
+    # ── Apply to fixture rows ─────────────────────────────────────────────────
     updated = 0
+    unmatched = []
+
     for row in existing.get("fixtures", []):
-        # Only update odds for unplayed matches (scores are null)
+        # Skip already-played matches — keep their final odds for reference
         if len(row) >= 11 and row[9] is not None:
-            continue  # match already played — leave odds as-is
+            continue
 
         home = row[2]
         away = row[3]
         key  = (home, away)
+
         if key in odds_lookup:
             h_odds, d_odds, a_odds = odds_lookup[key]
-            if len(row) < 11:
-                while len(row) < 11:
-                    row.append(None)
+            while len(row) < 11:
+                row.append(None)
             row[6] = h_odds
             row[7] = d_odds
             row[8] = a_odds
             updated += 1
+        else:
+            unmatched.append(f"{home} vs {away}")
 
-    log.info("Updated odds for %d fixtures.", updated)
+    log.info("Updated odds for %d/%d unplayed fixtures.",
+             updated, updated + len(unmatched))
+    if unmatched:
+        log.debug("No odds found for: %s", ", ".join(unmatched))
+
     return existing
 
 
