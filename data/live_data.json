@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-05T04:49:03Z",
+    "last_updated": "2026-06-05T06:55:54Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 48,
-    "odds_last_updated": "2026-06-05T04:49:03Z"
+    "update_count": 49,
+    "odds_last_updated": "2026-06-05T06:55:55Z"
   },
   "groups": {
     "A": [
@@ -471,9 +471,9 @@
       "South Africa",
       "Estadio Azteca",
       "Mexico City",
-      "-236",
-      "+339",
-      "+714",
+      "-239",
+      "+341",
+      "+721",
       null,
       null
     ],
@@ -784,7 +784,7 @@
       "NRG Stadium",
       "Houston",
       "-3125",
-      "+1750",
+      "+1770",
       "+5100",
       null,
       null
@@ -809,9 +809,9 @@
       "Ivory Coast",
       "BMO Field",
       "Toronto",
-      "-191",
-      "+326",
-      "+489",
+      "-193",
+      "+328",
+      "+493",
       null,
       null
     ],
@@ -953,7 +953,7 @@
       "SoFi Stadium",
       "Inglewood",
       "-111",
-      "+241",
+      "+239",
       "+327",
       null,
       null
@@ -1017,8 +1017,8 @@
       "Cabo Verde",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-1132",
-      "+972",
+      "-1111",
+      "+964",
       "+2617",
       null,
       null
@@ -1095,7 +1095,7 @@
       "Senegal",
       "MetLife Stadium",
       "East Rutherford",
-      "-224",
+      "-226",
       "+351",
       "+608",
       null,
@@ -1251,7 +1251,7 @@
       "DR Congo",
       "NRG Stadium",
       "Houston",
-      "-374",
+      "-372",
       "+480",
       "+1009",
       null,
@@ -1278,7 +1278,7 @@
       "NRG Stadium",
       "Houston",
       "-417",
-      "+514",
+      "+511",
       "+991",
       null,
       null
@@ -1331,7 +1331,7 @@
       "Arlington",
       "-139",
       "+275",
-      "+387",
+      "+385",
       null,
       null
     ],
@@ -1355,9 +1355,9 @@
       "Ghana",
       "Gillette Stadium",
       "Foxborough",
-      "-315",
+      "-318",
       "+424",
-      "+813",
+      "+820",
       null,
       null
     ],
@@ -1394,9 +1394,9 @@
       "Ghana",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-138",
-      "+266",
-      "+390",
+      "-145",
+      "+271",
+      "+420",
       null,
       null
     ]
