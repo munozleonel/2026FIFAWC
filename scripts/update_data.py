@@ -376,6 +376,12 @@ def fetch_odds(existing: dict) -> dict:
     if unmatched:
         log.debug("No odds found for: %s", ", ".join(unmatched))
 
+    # Record when odds were last successfully updated
+    if updated > 0:
+        existing.setdefault("_meta", {})
+        existing["_meta"]["odds_last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        log.info("Recorded odds_last_updated timestamp.")
+
     return existing
 
 
