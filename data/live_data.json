@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-05T17:06:27Z",
+    "last_updated": "2026-06-05T19:26:38Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 52,
-    "odds_last_updated": "2026-06-05T17:06:27Z"
+    "update_count": 53,
+    "odds_last_updated": "2026-06-05T19:26:39Z"
   },
   "groups": {
     "A": [
@@ -471,8 +471,8 @@
       "South Africa",
       "Estadio Azteca",
       "Mexico City",
-      "-237",
-      "+341",
+      "-236",
+      "+339",
       "+723",
       null,
       null
@@ -629,7 +629,7 @@
       "East Rutherford",
       "-164",
       "+286",
-      "+474",
+      "+471",
       null,
       null
     ],
@@ -809,9 +809,9 @@
       "Ivory Coast",
       "BMO Field",
       "Toronto",
-      "-192",
-      "+327",
-      "+491",
+      "-186",
+      "+323",
+      "+475",
       null,
       null
     ],
@@ -822,9 +822,9 @@
       "Curaçao",
       "Arrowhead Stadium",
       "Kansas City",
-      "-483",
+      "-486",
       "+553",
-      "+1182",
+      "+1225",
       null,
       null
     ],
@@ -835,9 +835,9 @@
       "Germany",
       "MetLife Stadium",
       "East Rutherford",
-      "+404",
-      "+290",
-      "-151",
+      "+402",
+      "+289",
+      "-150",
       null,
       null
     ],
@@ -862,7 +862,7 @@
       "AT&T Stadium",
       "Arlington",
       "-103",
-      "+258",
+      "+259",
       "+264",
       null,
       null
@@ -991,9 +991,9 @@
       "Belgium",
       "BC Place",
       "Vancouver",
-      "+804",
-      "+448",
-      "-339",
+      "+842",
+      "+458",
+      "-351",
       null,
       null
     ],
@@ -1019,7 +1019,7 @@
       "Atlanta",
       "-1186",
       "+974",
-      "+2529",
+      "+2571",
       null,
       null
     ],
@@ -1161,8 +1161,8 @@
       "BMO Field",
       "Toronto",
       "-226",
-      "+342",
-      "+611",
+      "+344",
+      "+616",
       null,
       null
     ],
