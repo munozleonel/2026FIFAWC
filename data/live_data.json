@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-06T13:01:01Z",
+    "last_updated": "2026-06-06T16:00:05Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 58,
-    "odds_last_updated": "2026-06-06T13:01:02Z"
+    "update_count": 59,
+    "odds_last_updated": "2026-06-06T16:00:06Z"
   },
   "groups": {
     "A": [
@@ -588,9 +588,9 @@
       "Qatar",
       "BC Place",
       "Vancouver",
-      "-314",
+      "-312",
       "+403",
-      "+876",
+      "+869",
       null,
       null
     ],
@@ -718,9 +718,9 @@
       "Türkiye",
       "BC Place",
       "Vancouver",
-      "+369",
-      "+261",
-      "-129",
+      "+375",
+      "+259",
+      "-130",
       null,
       null
     ],
@@ -861,7 +861,7 @@
       "Japan",
       "AT&T Stadium",
       "Arlington",
-      "-102",
+      "-103",
       "+257",
       "+264",
       null,
@@ -875,7 +875,7 @@
       "Estadio BBVA",
       "Guadalupe",
       "-109",
-      "+235",
+      "+237",
       "+320",
       null,
       null
@@ -954,7 +954,7 @@
       "Inglewood",
       "-111",
       "+239",
-      "+328",
+      "+329",
       null,
       null
     ],
@@ -1186,9 +1186,9 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-318",
-      "+446",
-      "+821",
+      "-320",
+      "+445",
+      "+829",
       null,
       null
     ],
@@ -1251,9 +1251,9 @@
       "DR Congo",
       "NRG Stadium",
       "Houston",
-      "-372",
-      "+481",
-      "+1001",
+      "-378",
+      "+485",
+      "+1009",
       null,
       null
     ],
@@ -1265,8 +1265,8 @@
       "Estadio Azteca",
       "Mexico City",
       "+708",
-      "+356",
-      "-248",
+      "+355",
+      "-247",
       null,
       null
     ],
