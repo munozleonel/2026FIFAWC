@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-06T16:00:05Z",
+    "last_updated": "2026-06-06T19:01:36Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 59,
-    "odds_last_updated": "2026-06-06T16:00:06Z"
+    "update_count": 60,
+    "odds_last_updated": "2026-06-06T19:01:37Z"
   },
   "groups": {
     "A": [
@@ -629,7 +629,7 @@
       "East Rutherford",
       "-164",
       "+286",
-      "+477",
+      "+474",
       null,
       null
     ],
@@ -666,9 +666,9 @@
       "Haiti",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-1429",
-      "+1086",
-      "+2700",
+      "-1463",
+      "+1102",
+      "+2717",
       null,
       null
     ],
@@ -757,9 +757,9 @@
       "USA",
       "SoFi Stadium",
       "Inglewood",
-      "+172",
-      "+242",
-      "+152",
+      "+169",
+      "+245",
+      "+153",
       null,
       null
     ],
@@ -874,9 +874,9 @@
       "Tunisia",
       "Estadio BBVA",
       "Guadalupe",
-      "-109",
+      "-110",
       "+237",
-      "+320",
+      "+321",
       null,
       null
     ],
@@ -1017,7 +1017,7 @@
       "Cabo Verde",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-1186",
+      "-1167",
       "+974",
       "+2571",
       null,
@@ -1031,7 +1031,7 @@
       "Hard Rock Stadium",
       "Miami Gardens",
       "+588",
-      "+333",
+      "+334",
       "-213",
       null,
       null
@@ -1173,9 +1173,9 @@
       "Algeria",
       "Arrowhead Stadium",
       "Kansas City",
-      "-256",
+      "-255",
       "+359",
-      "+747",
+      "+751",
       null,
       null
     ],
@@ -1187,7 +1187,7 @@
       "Levi's Stadium",
       "Santa Clara",
       "-320",
-      "+445",
+      "+443",
       "+829",
       null,
       null
