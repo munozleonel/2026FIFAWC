@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-06T06:18:13Z",
+    "last_updated": "2026-06-06T10:47:55Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 56,
-    "odds_last_updated": "2026-06-06T06:18:14Z"
+    "update_count": 57,
+    "odds_last_updated": "2026-06-06T10:47:56Z"
   },
   "groups": {
     "A": [
@@ -471,9 +471,9 @@
       "South Africa",
       "Estadio Azteca",
       "Mexico City",
-      "-237",
+      "-236",
       "+342",
-      "+716",
+      "+705",
       null,
       null
     ],
@@ -629,7 +629,7 @@
       "East Rutherford",
       "-164",
       "+286",
-      "+471",
+      "+477",
       null,
       null
     ],
@@ -640,9 +640,9 @@
       "Scotland",
       "Gillette Stadium",
       "Foxborough",
-      "+559",
-      "+337",
-      "-205",
+      "+552",
+      "+336",
+      "-204",
       null,
       null
     ],
@@ -666,9 +666,9 @@
       "Haiti",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-1538",
-      "+1152",
-      "+2767",
+      "-1429",
+      "+1086",
+      "+2700",
       null,
       null
     ],
@@ -718,9 +718,9 @@
       "Türkiye",
       "BC Place",
       "Vancouver",
-      "+374",
-      "+259",
-      "-130",
+      "+369",
+      "+261",
+      "-129",
       null,
       null
     ],
@@ -784,7 +784,7 @@
       "NRG Stadium",
       "Houston",
       "-2778",
-      "+1700",
+      "+1740",
       "+4600",
       null,
       null
@@ -1031,7 +1031,7 @@
       "Hard Rock Stadium",
       "Miami Gardens",
       "+588",
-      "+334",
+      "+333",
       "-213",
       null,
       null
@@ -1108,9 +1108,9 @@
       "Norway",
       "Gillette Stadium",
       "Foxborough",
-      "+1164",
-      "+571",
-      "-476",
+      "+1179",
+      "+581",
+      "-483",
       null,
       null
     ],
@@ -1173,9 +1173,9 @@
       "Algeria",
       "Arrowhead Stadium",
       "Kansas City",
-      "-255",
+      "-256",
       "+359",
-      "+744",
+      "+747",
       null,
       null
     ],
@@ -1186,9 +1186,9 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-317",
-      "+445",
-      "+817",
+      "-318",
+      "+446",
+      "+821",
       null,
       null
     ],
@@ -1214,7 +1214,7 @@
       "Santa Clara",
       "+474",
       "+296",
-      "-175",
+      "-176",
       null,
       null
     ],
