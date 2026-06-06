@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-06T10:47:55Z",
+    "last_updated": "2026-06-06T13:01:01Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 57,
-    "odds_last_updated": "2026-06-06T10:47:56Z"
+    "update_count": 58,
+    "odds_last_updated": "2026-06-06T13:01:02Z"
   },
   "groups": {
     "A": [
@@ -588,9 +588,9 @@
       "Qatar",
       "BC Place",
       "Vancouver",
-      "-312",
+      "-314",
       "+403",
-      "+869",
+      "+876",
       null,
       null
     ],
@@ -706,7 +706,7 @@
       "SoFi Stadium",
       "Inglewood",
       "-103",
-      "+237",
+      "+238",
       "+294",
       null,
       null
@@ -809,9 +809,9 @@
       "Ivory Coast",
       "BMO Field",
       "Toronto",
-      "-186",
+      "-187",
       "+324",
-      "+476",
+      "+477",
       null,
       null
     ],
@@ -1045,7 +1045,7 @@
       "Atlanta",
       "-959",
       "+838",
-      "+2232",
+      "+2218",
       null,
       null
     ],
