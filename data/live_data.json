@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-07T19:01:24Z",
+    "last_updated": "2026-06-07T21:56:20Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 67,
-    "odds_last_updated": "2026-06-07T19:01:24Z"
+    "update_count": 68,
+    "odds_last_updated": "2026-06-07T21:56:21Z"
   },
   "groups": {
     "A": [
@@ -471,7 +471,7 @@
       "South Africa",
       "Estadio Azteca",
       "Mexico City",
-      "-236",
+      "-235",
       "+336",
       "+708",
       null,
@@ -510,9 +510,9 @@
       "South Korea",
       "Estadio Akron",
       "Zapopan",
-      "-125",
+      "-124",
       "+247",
-      "+359",
+      "+357",
       null,
       null
     ],
@@ -627,9 +627,9 @@
       "Morocco",
       "MetLife Stadium",
       "East Rutherford",
-      "-163",
-      "+286",
-      "+474",
+      "-153",
+      "+276",
+      "+444",
       null,
       null
     ],
@@ -667,8 +667,8 @@
       "Lincoln Financial Field",
       "Philadelphia",
       "-1429",
-      "+1078",
-      "+2692",
+      "+1073",
+      "+2683",
       null,
       null
     ],
@@ -796,9 +796,9 @@
       "Ecuador",
       "Lincoln Financial Field",
       "Philadelphia",
-      "+261",
+      "+258",
       "+182",
-      "+137",
+      "+139",
       null,
       null
     ],
@@ -861,9 +861,9 @@
       "Japan",
       "AT&T Stadium",
       "Arlington",
-      "-102",
+      "-101",
       "+257",
-      "+263",
+      "+260",
       null,
       null
     ],
@@ -1043,8 +1043,8 @@
       "Saudi Arabia",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-959",
-      "+838",
+      "-972",
+      "+848",
       "+2218",
       null,
       null
@@ -1108,9 +1108,9 @@
       "Norway",
       "Gillette Stadium",
       "Foxborough",
-      "+1193",
-      "+576",
-      "-486",
+      "+1186",
+      "+574",
+      "-483",
       null,
       null
     ],
@@ -1186,7 +1186,7 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-318",
+      "-320",
       "+446",
       "+821",
       null,
@@ -1212,9 +1212,9 @@
       "Algeria",
       "Levi's Stadium",
       "Santa Clara",
-      "+477",
-      "+295",
-      "-175",
+      "+510",
+      "+307",
+      "-187",
       null,
       null
     ],
