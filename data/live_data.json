@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-07T06:54:58Z",
+    "last_updated": "2026-06-07T10:58:52Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 63,
-    "odds_last_updated": "2026-06-07T06:54:58Z"
+    "update_count": 64,
+    "odds_last_updated": "2026-06-07T10:58:53Z"
   },
   "groups": {
     "A": [
@@ -588,7 +588,7 @@
       "Qatar",
       "BC Place",
       "Vancouver",
-      "-318",
+      "-320",
       "+407",
       "+880",
       null,
@@ -641,8 +641,8 @@
       "Gillette Stadium",
       "Foxborough",
       "+552",
-      "+335",
-      "-204",
+      "+331",
+      "-202",
       null,
       null
     ],
@@ -667,8 +667,8 @@
       "Lincoln Financial Field",
       "Philadelphia",
       "-1429",
-      "+1073",
-      "+2667",
+      "+1078",
+      "+2683",
       null,
       null
     ],
@@ -706,7 +706,7 @@
       "SoFi Stadium",
       "Inglewood",
       "-103",
-      "+238",
+      "+237",
       "+292",
       null,
       null
@@ -784,8 +784,8 @@
       "NRG Stadium",
       "Houston",
       "-2778",
-      "+1720",
-      "+4600",
+      "+1740",
+      "+4500",
       null,
       null
     ],
@@ -796,9 +796,9 @@
       "Ecuador",
       "Lincoln Financial Field",
       "Philadelphia",
-      "+262",
+      "+261",
       "+181",
-      "+137",
+      "+138",
       null,
       null
     ],
@@ -1018,7 +1018,7 @@
       "Mercedes-Benz Stadium",
       "Atlanta",
       "-1186",
-      "+999",
+      "+1013",
       "+2457",
       null,
       null
@@ -1030,9 +1030,9 @@
       "Uruguay",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+588",
-      "+334",
-      "-213",
+      "+595",
+      "+328",
+      "-212",
       null,
       null
     ],
@@ -1096,8 +1096,8 @@
       "MetLife Stadium",
       "East Rutherford",
       "-224",
-      "+351",
-      "+608",
+      "+346",
+      "+611",
       null,
       null
     ],
@@ -1110,7 +1110,7 @@
       "Foxborough",
       "+1193",
       "+583",
-      "-490",
+      "-493",
       null,
       null
     ],
