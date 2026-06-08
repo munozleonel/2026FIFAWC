@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-08T19:56:35Z",
+    "last_updated": "2026-06-08T22:17:41Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 73,
-    "odds_last_updated": "2026-06-08T19:56:36Z"
+    "update_count": 74,
+    "odds_last_updated": "2026-06-08T22:17:41Z"
   },
   "groups": {
     "A": [
@@ -640,9 +640,9 @@
       "Scotland",
       "Gillette Stadium",
       "Foxborough",
-      "+551",
+      "+537",
       "+334",
-      "-203",
+      "-199",
       null,
       null
     ],
@@ -718,9 +718,9 @@
       "Türkiye",
       "BC Place",
       "Vancouver",
-      "+386",
-      "+263",
-      "-134",
+      "+393",
+      "+264",
+      "-137",
       null,
       null
     ],
@@ -783,9 +783,9 @@
       "Curaçao",
       "NRG Stadium",
       "Houston",
-      "-2778",
-      "+1760",
-      "+4300",
+      "-3333",
+      "+1740",
+      "+4600",
       null,
       null
     ],
@@ -862,7 +862,7 @@
       "AT&T Stadium",
       "Arlington",
       "+100",
-      "+255",
+      "+254",
       "+260",
       null,
       null
@@ -887,9 +887,9 @@
       "Sweden",
       "NRG Stadium",
       "Houston",
-      "-156",
-      "+294",
-      "+408",
+      "-157",
+      "+295",
+      "+409",
       null,
       null
     ],
@@ -914,7 +914,7 @@
       "AT&T Stadium",
       "Arlington",
       "+554",
-      "+324",
+      "+325",
       "-199",
       null,
       null
@@ -1030,9 +1030,9 @@
       "Uruguay",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+637",
-      "+338",
-      "-225",
+      "+659",
+      "+342",
+      "-229",
       null,
       null
     ],
@@ -1095,9 +1095,9 @@
       "Senegal",
       "MetLife Stadium",
       "East Rutherford",
-      "-221",
-      "+343",
-      "+601",
+      "-220",
+      "+342",
+      "+594",
       null,
       null
     ],
@@ -1160,8 +1160,8 @@
       "Iraq",
       "BMO Field",
       "Toronto",
-      "-234",
-      "+350",
+      "-235",
+      "+351",
       "+641",
       null,
       null
@@ -1238,9 +1238,9 @@
       "Austria",
       "Arrowhead Stadium",
       "Kansas City",
-      "+248",
+      "+255",
       "+218",
-      "+122",
+      "+120",
       null,
       null
     ],
@@ -1266,7 +1266,7 @@
       "Mexico City",
       "+708",
       "+355",
-      "-248",
+      "-249",
       null,
       null
     ],
@@ -1277,7 +1277,7 @@
       "Uzbekistan",
       "NRG Stadium",
       "Houston",
-      "-409",
+      "-412",
       "+516",
       "+971",
       null,
@@ -1355,8 +1355,8 @@
       "Ghana",
       "Gillette Stadium",
       "Foxborough",
-      "-320",
-      "+427",
+      "-323",
+      "+434",
       "+816",
       null,
       null
