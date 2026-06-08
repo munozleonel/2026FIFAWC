@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-08T17:41:20Z",
+    "last_updated": "2026-06-08T19:56:35Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 72,
-    "odds_last_updated": "2026-06-08T17:41:20Z"
+    "update_count": 73,
+    "odds_last_updated": "2026-06-08T19:56:36Z"
   },
   "groups": {
     "A": [
@@ -473,7 +473,7 @@
       "Mexico City",
       "-240",
       "+340",
-      "+731",
+      "+724",
       null,
       null
     ],
@@ -588,9 +588,9 @@
       "Qatar",
       "BC Place",
       "Vancouver",
-      "-321",
-      "+408",
-      "+894",
+      "-323",
+      "+409",
+      "+900",
       null,
       null
     ],
@@ -744,9 +744,9 @@
       "Australia",
       "Lumen Field",
       "Seattle",
-      "-135",
-      "+274",
-      "+356",
+      "-134",
+      "+272",
+      "+350",
       null,
       null
     ],
@@ -783,8 +783,8 @@
       "Curaçao",
       "NRG Stadium",
       "Houston",
-      "-2941",
-      "+1770",
+      "-2778",
+      "+1760",
       "+4300",
       null,
       null
@@ -900,7 +900,7 @@
       "Japan",
       "Estadio BBVA",
       "Guadalupe",
-      "+374",
+      "+377",
       "+246",
       "-129",
       null,
@@ -954,7 +954,7 @@
       "Inglewood",
       "-112",
       "+238",
-      "+332",
+      "+333",
       null,
       null
     ],
@@ -1006,7 +1006,7 @@
       "Seattle",
       "+130",
       "+205",
-      "+241",
+      "+242",
       null,
       null
     ],
@@ -1030,9 +1030,9 @@
       "Uruguay",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+626",
+      "+637",
       "+338",
-      "-222",
+      "-225",
       null,
       null
     ],
@@ -1083,7 +1083,7 @@
       "Estadio Akron",
       "Zapopan",
       "+159",
-      "+228",
+      "+229",
       "+172",
       null,
       null
@@ -1186,7 +1186,7 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-318",
+      "-320",
       "+448",
       "+807",
       null,
@@ -1212,9 +1212,9 @@
       "Algeria",
       "Levi's Stadium",
       "Santa Clara",
-      "+503",
-      "+304",
-      "-184",
+      "+496",
+      "+303",
+      "-183",
       null,
       null
     ],
@@ -1225,8 +1225,8 @@
       "Argentina",
       "AT&T Stadium",
       "Arlington",
-      "+1283",
-      "+572",
+      "+1267",
+      "+570",
       "-504",
       null,
       null
@@ -1238,9 +1238,9 @@
       "Austria",
       "Arrowhead Stadium",
       "Kansas City",
-      "+234",
-      "+217",
-      "+128",
+      "+248",
+      "+218",
+      "+122",
       null,
       null
     ],
@@ -1317,8 +1317,8 @@
       "Mercedes-Benz Stadium",
       "Atlanta",
       "+132",
-      "+227",
-      "+218",
+      "+226",
+      "+217",
       null,
       null
     ],
@@ -1381,9 +1381,9 @@
       "England",
       "MetLife Stadium",
       "East Rutherford",
-      "+786",
-      "+489",
-      "-331",
+      "+794",
+      "+493",
+      "-339",
       null,
       null
     ],
