@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-07T21:56:20Z",
+    "last_updated": "2026-06-08T02:11:15Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 68,
-    "odds_last_updated": "2026-06-07T21:56:21Z"
+    "update_count": 69,
+    "odds_last_updated": "2026-06-08T02:11:15Z"
   },
   "groups": {
     "A": [
@@ -472,8 +472,8 @@
       "Estadio Azteca",
       "Mexico City",
       "-235",
-      "+336",
-      "+708",
+      "+334",
+      "+722",
       null,
       null
     ],
@@ -562,9 +562,9 @@
       "Switzerland",
       "Levi's Stadium",
       "Santa Clara",
-      "+1148",
-      "+535",
-      "-440",
+      "+1155",
+      "+538",
+      "-443",
       null,
       null
     ],
@@ -627,8 +627,8 @@
       "Morocco",
       "MetLife Stadium",
       "East Rutherford",
-      "-153",
-      "+276",
+      "-154",
+      "+277",
       "+444",
       null,
       null
@@ -706,8 +706,8 @@
       "SoFi Stadium",
       "Inglewood",
       "-103",
-      "+237",
-      "+294",
+      "+236",
+      "+295",
       null,
       null
     ],
@@ -784,8 +784,8 @@
       "NRG Stadium",
       "Houston",
       "-2778",
-      "+1740",
-      "+4300",
+      "+1680",
+      "+4800",
       null,
       null
     ],
@@ -1044,8 +1044,8 @@
       "Mercedes-Benz Stadium",
       "Atlanta",
       "-972",
-      "+848",
-      "+2218",
+      "+844",
+      "+2232",
       null,
       null
     ],
@@ -1173,7 +1173,7 @@
       "Algeria",
       "Arrowhead Stadium",
       "Kansas City",
-      "-255",
+      "-254",
       "+356",
       "+751",
       null,
@@ -1186,9 +1186,9 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-320",
-      "+446",
-      "+821",
+      "-321",
+      "+444",
+      "+832",
       null,
       null
     ],
@@ -1212,9 +1212,9 @@
       "Algeria",
       "Levi's Stadium",
       "Santa Clara",
-      "+510",
-      "+307",
-      "-187",
+      "+514",
+      "+310",
+      "-190",
       null,
       null
     ],
@@ -1331,7 +1331,7 @@
       "Arlington",
       "-139",
       "+274",
-      "+385",
+      "+384",
       null,
       null
     ],
@@ -1355,7 +1355,7 @@
       "Ghana",
       "Gillette Stadium",
       "Foxborough",
-      "-318",
+      "-317",
       "+424",
       "+813",
       null,
