@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-08T02:11:15Z",
+    "last_updated": "2026-06-08T07:19:07Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 69,
-    "odds_last_updated": "2026-06-08T02:11:15Z"
+    "update_count": 70,
+    "odds_last_updated": "2026-06-08T07:19:08Z"
   },
   "groups": {
     "A": [
@@ -471,9 +471,9 @@
       "South Africa",
       "Estadio Azteca",
       "Mexico City",
-      "-235",
-      "+334",
-      "+722",
+      "-239",
+      "+338",
+      "+727",
       null,
       null
     ],
@@ -667,8 +667,8 @@
       "Lincoln Financial Field",
       "Philadelphia",
       "-1429",
-      "+1073",
-      "+2683",
+      "+1078",
+      "+2692",
       null,
       null
     ],
@@ -718,9 +718,9 @@
       "Türkiye",
       "BC Place",
       "Vancouver",
-      "+376",
-      "+260",
-      "-130",
+      "+380",
+      "+261",
+      "-131",
       null,
       null
     ],
@@ -784,8 +784,8 @@
       "NRG Stadium",
       "Houston",
       "-2778",
-      "+1680",
-      "+4800",
+      "+1740",
+      "+4300",
       null,
       null
     ],
@@ -861,9 +861,9 @@
       "Japan",
       "AT&T Stadium",
       "Arlington",
-      "-101",
+      "-102",
       "+257",
-      "+260",
+      "+263",
       null,
       null
     ],
@@ -940,7 +940,7 @@
       "Lumen Field",
       "Seattle",
       "-153",
-      "+288",
+      "+289",
       "+419",
       null,
       null
@@ -953,8 +953,8 @@
       "SoFi Stadium",
       "Inglewood",
       "-111",
-      "+236",
-      "+329",
+      "+237",
+      "+328",
       null,
       null
     ],
@@ -1355,9 +1355,9 @@
       "Ghana",
       "Gillette Stadium",
       "Foxborough",
-      "-317",
-      "+424",
-      "+813",
+      "-320",
+      "+427",
+      "+816",
       null,
       null
     ],
@@ -1381,7 +1381,7 @@
       "England",
       "MetLife Stadium",
       "East Rutherford",
-      "+757",
+      "+761",
       "+506",
       "-341",
       null,
