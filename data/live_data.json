@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-09T01:49:11Z",
+    "last_updated": "2026-06-09T06:37:40Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 75,
-    "odds_last_updated": "2026-06-09T01:49:12Z"
+    "update_count": 76,
+    "odds_last_updated": "2026-06-09T06:37:40Z"
   },
   "groups": {
     "A": [
@@ -472,7 +472,7 @@
       "Estadio Azteca",
       "Mexico City",
       "-240",
-      "+340",
+      "+341",
       "+731",
       null,
       null
@@ -564,7 +564,7 @@
       "Santa Clara",
       "+1169",
       "+538",
-      "-449",
+      "-455",
       null,
       null
     ],
@@ -785,7 +785,7 @@
       "Houston",
       "-2778",
       "+1710",
-      "+4200",
+      "+4000",
       null,
       null
     ],
@@ -978,9 +978,9 @@
       "Egypt",
       "BC Place",
       "Vancouver",
-      "+378",
-      "+269",
-      "-139",
+      "+375",
+      "+268",
+      "-138",
       null,
       null
     ],
@@ -1030,7 +1030,7 @@
       "Uruguay",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+653",
+      "+660",
       "+342",
       "-230",
       null,
@@ -1082,8 +1082,8 @@
       "Saudi Arabia",
       "Estadio Akron",
       "Zapopan",
-      "+159",
-      "+229",
+      "+158",
+      "+231",
       "+172",
       null,
       null
