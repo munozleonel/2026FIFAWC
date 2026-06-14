@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-14T11:21:13Z",
+    "last_updated": "2026-06-14T13:22:03Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 109,
-    "odds_last_updated": "2026-06-14T11:21:13Z"
+    "update_count": 110,
+    "odds_last_updated": "2026-06-14T13:22:04Z"
   },
   "groups": {
     "A": [
@@ -589,8 +589,8 @@
       "BC Place",
       "Vancouver",
       "-369",
-      "+474",
-      "+1049",
+      "+475",
+      "+1043",
       null,
       null
     ],
@@ -653,8 +653,8 @@
       "Morocco",
       "Gillette Stadium",
       "Foxborough",
-      "+397",
-      "+257",
+      "+400",
+      "+259",
       "-132",
       null,
       null
@@ -666,9 +666,9 @@
       "Haiti",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-989",
-      "+978",
-      "+2055",
+      "-947",
+      "+975",
+      "+2004",
       null,
       null
     ],
@@ -733,7 +733,7 @@
       "Santa Clara",
       "+102",
       "+232",
-      "+296",
+      "+295",
       null,
       null
     ],
@@ -744,9 +744,9 @@
       "Australia",
       "Lumen Field",
       "Seattle",
-      "-172",
-      "+328",
-      "+454",
+      "-169",
+      "+322",
+      "+448",
       null,
       null
     ],
@@ -771,8 +771,8 @@
       "Levi's Stadium",
       "Santa Clara",
       "+116",
-      "+229",
-      "+252",
+      "+230",
+      "+250",
       null,
       null
     ],
@@ -783,9 +783,9 @@
       "Curaçao",
       "NRG Stadium",
       "Houston",
-      "-3000",
+      "-2647",
       "+1781",
-      "+4022",
+      "+3911",
       null,
       null
     ],
@@ -796,9 +796,9 @@
       "Ecuador",
       "Lincoln Financial Field",
       "Philadelphia",
-      "+228",
-      "+184",
-      "+156",
+      "+226",
+      "+186",
+      "+155",
       null,
       null
     ],
@@ -823,8 +823,8 @@
       "Arrowhead Stadium",
       "Kansas City",
       "-523",
-      "+595",
-      "+1286",
+      "+601",
+      "+1275",
       null,
       null
     ],
@@ -861,8 +861,8 @@
       "Japan",
       "AT&T Stadium",
       "Arlington",
-      "+103",
-      "+250",
+      "+104",
+      "+246",
       "+269",
       null,
       null
@@ -874,9 +874,9 @@
       "Tunisia",
       "Estadio BBVA",
       "Guadalupe",
-      "-107",
-      "+242",
-      "+316",
+      "-108",
+      "+238",
+      "+325",
       null,
       null
     ],
@@ -939,8 +939,8 @@
       "Egypt",
       "Lumen Field",
       "Seattle",
-      "-163",
-      "+295",
+      "-162",
+      "+294",
       "+463",
       null,
       null
@@ -1017,9 +1017,9 @@
       "Cabo Verde",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-1125",
-      "+1019",
-      "+2530",
+      "-1084",
+      "+1024",
+      "+2394",
       null,
       null
     ],
@@ -1096,7 +1096,7 @@
       "MetLife Stadium",
       "East Rutherford",
       "-218",
-      "+342",
+      "+344",
       "+625",
       null,
       null
@@ -1135,7 +1135,7 @@
       "MetLife Stadium",
       "East Rutherford",
       "+113",
-      "+248",
+      "+249",
       "+233",
       null,
       null
@@ -1174,7 +1174,7 @@
       "Arrowhead Stadium",
       "Kansas City",
       "-258",
-      "+359",
+      "+360",
       "+775",
       null,
       null
@@ -1186,9 +1186,9 @@
       "Jordan",
       "Levi's Stadium",
       "Santa Clara",
-      "-308",
-      "+444",
-      "+803",
+      "-301",
+      "+437",
+      "+785",
       null,
       null
     ],
@@ -1329,9 +1329,9 @@
       "Croatia",
       "AT&T Stadium",
       "Arlington",
-      "-139",
+      "-140",
       "+277",
-      "+396",
+      "+402",
       null,
       null
     ],
@@ -1342,9 +1342,9 @@
       "Panama",
       "BMO Field",
       "Toronto",
-      "+116",
+      "+117",
       "+239",
-      "+244",
+      "+242",
       null,
       null
     ],
