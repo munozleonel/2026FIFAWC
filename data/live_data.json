@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-26T01:59:02Z",
+    "last_updated": "2026-06-26T06:40:01Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 182,
-    "odds_last_updated": "2026-06-26T01:59:03Z"
+    "update_count": 183,
+    "odds_last_updated": "2026-06-26T06:40:02Z"
   },
   "groups": {
     "A": [
@@ -991,9 +991,9 @@
       "Belgium",
       "BC Place",
       "Vancouver",
-      "+1511",
-      "+688",
-      "-596",
+      "+1444",
+      "+683",
+      "-570",
       null,
       null
     ],
@@ -1004,9 +1004,9 @@
       "Iran",
       "Lumen Field",
       "Seattle",
-      "+146",
-      "+162",
-      "+283",
+      "+149",
+      "+161",
+      "+277",
       null,
       null
     ],
@@ -1069,9 +1069,9 @@
       "Spain",
       "NRG Stadium",
       "Houston",
-      "+663",
-      "+318",
-      "-209",
+      "+599",
+      "+297",
+      "-186",
       null,
       null
     ],
@@ -1082,9 +1082,9 @@
       "Saudi Arabia",
       "Estadio Akron",
       "Zapopan",
-      "+164",
-      "+233",
-      "+170",
+      "+165",
+      "+230",
+      "+173",
       null,
       null
     ],
@@ -1147,9 +1147,9 @@
       "France",
       "Gillette Stadium",
       "Foxborough",
-      "+419",
-      "+358",
-      "-177",
+      "+384",
+      "+365",
+      "-166",
       null,
       null
     ],
@@ -1160,9 +1160,9 @@
       "Iraq",
       "BMO Field",
       "Toronto",
-      "-443",
-      "+554",
-      "+1139",
+      "-433",
+      "+565",
+      "+1092",
       null,
       null
     ],
@@ -1225,9 +1225,9 @@
       "Argentina",
       "AT&T Stadium",
       "Arlington",
-      "+1386",
-      "+646",
-      "-559",
+      "+1392",
+      "+651",
+      "-562",
       null,
       null
     ],
@@ -1239,8 +1239,8 @@
       "Arrowhead Stadium",
       "Kansas City",
       "+296",
-      "+124",
-      "+187",
+      "+122",
+      "+189",
       null,
       null
     ],
@@ -1303,9 +1303,9 @@
       "Portugal",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+320",
-      "+274",
-      "-118",
+      "+317",
+      "+271",
+      "-116",
       null,
       null
     ],
@@ -1317,8 +1317,8 @@
       "Mercedes-Benz Stadium",
       "Atlanta",
       "-138",
-      "+310",
-      "+345",
+      "+311",
+      "+347",
       null,
       null
     ],
@@ -1381,9 +1381,9 @@
       "England",
       "MetLife Stadium",
       "East Rutherford",
-      "+1453",
-      "+690",
-      "-608",
+      "+1578",
+      "+703",
+      "-652",
       null,
       null
     ],
@@ -1396,7 +1396,7 @@
       "Philadelphia",
       "-130",
       "+226",
-      "+465",
+      "+469",
       null,
       null
     ]
