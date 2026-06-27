@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-27T06:18:14Z",
+    "last_updated": "2026-06-27T10:50:34Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 190,
-    "odds_last_updated": "2026-06-27T06:18:15Z"
+    "update_count": 191,
+    "odds_last_updated": "2026-06-27T10:50:34Z"
   },
   "groups": {
     "A": [
@@ -1225,9 +1225,9 @@
       "Argentina",
       "AT&T Stadium",
       "Arlington",
-      "+1550",
-      "+721",
-      "-634",
+      "+1594",
+      "+747",
+      "-657",
       null,
       null
     ],
@@ -1238,9 +1238,9 @@
       "Austria",
       "Arrowhead Stadium",
       "Kansas City",
-      "+307",
-      "+118",
-      "+191",
+      "+326",
+      "+110",
+      "+198",
       null,
       null
     ],
@@ -1303,9 +1303,9 @@
       "Portugal",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+252",
-      "+276",
-      "+101",
+      "+254",
+      "+282",
+      "-101",
       null,
       null
     ],
@@ -1316,9 +1316,9 @@
       "Uzbekistan",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-150",
-      "+309",
-      "+399",
+      "-168",
+      "+316",
+      "+462",
       null,
       null
     ],
@@ -1381,9 +1381,9 @@
       "England",
       "MetLife Stadium",
       "East Rutherford",
-      "+1428",
-      "+707",
-      "-600",
+      "+1486",
+      "+749",
+      "-647",
       null,
       null
     ],
@@ -1394,9 +1394,9 @@
       "Ghana",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-115",
-      "+215",
-      "+413",
+      "-111",
+      "+210",
+      "+404",
       null,
       null
     ]
