@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-26T21:58:59Z",
+    "last_updated": "2026-06-27T01:52:46Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 188,
-    "odds_last_updated": "2026-06-26T21:58:59Z"
+    "update_count": 189,
+    "odds_last_updated": "2026-06-27T01:52:46Z"
   },
   "groups": {
     "A": [
@@ -991,9 +991,9 @@
       "Belgium",
       "BC Place",
       "Vancouver",
-      "+1192",
-      "+683",
-      "-523",
+      "+1203",
+      "+698",
+      "-539",
       null,
       null
     ],
@@ -1004,9 +1004,9 @@
       "Iran",
       "Lumen Field",
       "Seattle",
-      "+144",
-      "+164",
-      "+283",
+      "+167",
+      "+166",
+      "+236",
       null,
       null
     ],
@@ -1069,9 +1069,9 @@
       "Spain",
       "NRG Stadium",
       "Houston",
-      "+530",
-      "+271",
-      "-162",
+      "+4433",
+      "+525",
+      "-789",
       null,
       null
     ],
@@ -1082,9 +1082,9 @@
       "Saudi Arabia",
       "Estadio Akron",
       "Zapopan",
-      "+177",
-      "+236",
-      "+158",
+      "+504",
+      "-274",
+      "+503",
       null,
       null
     ],
@@ -1225,8 +1225,8 @@
       "Argentina",
       "AT&T Stadium",
       "Arlington",
-      "+1396",
-      "+673",
+      "+1414",
+      "+680",
       "-577",
       null,
       null
@@ -1238,9 +1238,9 @@
       "Austria",
       "Arrowhead Stadium",
       "Kansas City",
-      "+302",
-      "+120",
-      "+190",
+      "+307",
+      "+118",
+      "+191",
       null,
       null
     ],
@@ -1303,8 +1303,8 @@
       "Portugal",
       "Hard Rock Stadium",
       "Miami Gardens",
-      "+296",
-      "+273",
+      "+293",
+      "+275",
       "-112",
       null,
       null
@@ -1316,9 +1316,9 @@
       "Uzbekistan",
       "Mercedes-Benz Stadium",
       "Atlanta",
-      "-134",
-      "+299",
-      "+345",
+      "-138",
+      "+302",
+      "+354",
       null,
       null
     ],
@@ -1381,9 +1381,9 @@
       "England",
       "MetLife Stadium",
       "East Rutherford",
-      "+1364",
-      "+683",
-      "-573",
+      "+1331",
+      "+666",
+      "-556",
       null,
       null
     ],
@@ -1394,9 +1394,9 @@
       "Ghana",
       "Lincoln Financial Field",
       "Philadelphia",
-      "-131",
-      "+226",
-      "+476",
+      "-127",
+      "+223",
+      "+467",
       null,
       null
     ]
