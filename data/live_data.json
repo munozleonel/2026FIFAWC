@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "last_updated": "2026-06-27T21:50:15Z",
+    "last_updated": "2026-06-28T02:02:41Z",
     "source": "FIFA / API-Football / manual",
-    "update_count": 195,
-    "odds_last_updated": "2026-06-27T21:50:16Z"
+    "update_count": 196,
+    "odds_last_updated": "2026-06-28T02:02:41Z"
   },
   "groups": {
     "A": [
@@ -1225,9 +1225,9 @@
       "Argentina",
       "AT&T Stadium",
       "Arlington",
-      "+1817",
-      "+792",
-      "-732",
+      "+1789",
+      "+770",
+      "-796",
       null,
       null
     ],
@@ -1239,8 +1239,8 @@
       "Arrowhead Stadium",
       "Kansas City",
       "+254",
-      "+103",
-      "+266",
+      "+115",
+      "+235",
       null,
       null
     ],
